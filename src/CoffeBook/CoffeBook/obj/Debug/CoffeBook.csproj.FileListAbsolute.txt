@@ -1,1 +1,4 @@
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\bin\Debug\CoffeBook.exe.config
+C:\Users\Bali\Documents\GitHub\bali-pety-hf\src\CoffeBook\CoffeBook\bin\Debug\CoffeBook.exe.config
+C:\Users\Bali\Documents\GitHub\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook.exe
+C:\Users\Bali\Documents\GitHub\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook.pdb
