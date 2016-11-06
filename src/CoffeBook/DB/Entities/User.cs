@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace DB.Entities
 {
-    public class Coffee
+    public class User
     {
         public long Id { get; set; }
         [Required]
         [StringLength(100)]
         [Index(IsUnique = true)]
         public string Name { get; set; }
-        public byte[] Picture { get; set; }
+        [Required]
+        public string Password { get; set; }
+        public ICollection<RecipeBook> RecipeBooks { get; set; }
     }
 }
