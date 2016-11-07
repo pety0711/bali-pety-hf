@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeBook", "CoffeBook\Coff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB\DB.csproj", "{F9D740D6-4011-425C-809D-C5E6C574BCCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{9F539165-6025-4870-B0CB-186AEEE144CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F9D740D6-4011-425C-809D-C5E6C574BCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9D740D6-4011-425C-809D-C5E6C574BCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9D740D6-4011-425C-809D-C5E6C574BCCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F539165-6025-4870-B0CB-186AEEE144CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F539165-6025-4870-B0CB-186AEEE144CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F539165-6025-4870-B0CB-186AEEE144CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F539165-6025-4870-B0CB-186AEEE144CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

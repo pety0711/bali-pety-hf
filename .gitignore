@@ -3,3 +3,6 @@ doc/~$ecifikáció.docx
 /src/CoffeBook/CoffeBook/bin/Debug
 /src/CoffeBook/DB/bin/Debug
 /src/CoffeBook/DB/obj/Debug
+/src/CoffeBook/BL/obj/Debug
+/src/CoffeBook/.vs/CoffeBook/v14/.suo
+/src/CoffeBook/DB/DB.csproj.user
