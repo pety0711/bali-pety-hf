@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Bali\Documents\GitHub\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\
+C:\Users\petys\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\
 CoffeBook
 none
 false
 DEBUG;TRACE
-C:\Users\Bali\Documents\GitHub\bali-pety-hf\src\CoffeBook\CoffeBook\App.xaml
-2-168014517
+C:\Users\petys\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\App.xaml
+21961605062
 
-111846168491
-191635720648
-Views\MainWindow.xaml;Views\User.xaml;
+16-1506396722
+20-735786877
+Views\MainWindow.xaml;Views\Authenticated.xaml;
 
-True
+False
 
