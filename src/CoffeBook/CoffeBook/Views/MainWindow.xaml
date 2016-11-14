@@ -6,10 +6,8 @@
         xmlns:local="clr-namespace:CoffeBook"
         xmlns:viewmodel="clr-namespace:CoffeBook.ViewModels"
         mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         Title="CoffeeBook" Height="680" Width="900">
-    <Window.DataContext>
-        <viewmodel:MainWindowViewModel/>
-    </Window.DataContext>
     <StackPanel Margin="10" Orientation="Vertical">
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
