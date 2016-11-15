@@ -5,6 +5,8 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System;
+using System.Collections.Generic;
 
 namespace CoffeBook.ViewModel
 {
@@ -29,6 +31,15 @@ namespace CoffeBook.ViewModel
 
         public ICommand RegisterButtonCommand { get; private set; }
         public ICommand LoginButtonCommand { get; private set; }
+
+        private ICollection<RecipeBook> recipebooks;
+
+        public ICollection<RecipeBook> MyProperty
+        {
+            get { return recipebooks; }
+            set { recipebooks = value; }
+        }
+
 
         public MainViewModel(ICustomNavigationService navService)
         {
@@ -117,6 +128,7 @@ namespace CoffeBook.ViewModel
             if (user_result == null)
             {
                 UserHelper.RegisterUser(LoginUser);
+                Authenticate(LoginUser);
             }
             else
             {
@@ -166,6 +178,13 @@ namespace CoffeBook.ViewModel
                 return true;
             }
         }
+
+        private void Authenticate(User loginUser)
+        {
+            
+        }
+
+        private void LoadRecipeBooks() { }
 
         private void loadRecipes()
         {

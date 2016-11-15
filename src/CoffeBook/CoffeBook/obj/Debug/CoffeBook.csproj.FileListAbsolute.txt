@@ -69,3 +69,5 @@ D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Cof
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook.Properties.Resources.resources
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook.csproj.GenerateResource.Cache
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Views\AuthenticatedView.g.cs
+D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Views\MainWindowView.g.cs

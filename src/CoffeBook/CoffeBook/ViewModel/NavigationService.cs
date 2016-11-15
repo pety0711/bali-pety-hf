@@ -92,7 +92,7 @@ namespace CoffeBook.ViewModel
                 if (frame != null)
                 {
                     frame.Source = _pagesByKey[pageKey];
-                }
+                 }
                 Parameter = parameter;
                 _historic.Add(pageKey);
                 CurrentPageKey = pageKey;

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\App.xaml
-21961605062
+31317011742
 
-21-1887294404
+222021360458
 78-168972081
-Views\MainWindow.xaml;Views\Authenticated.xaml;
+Views\MainWindow.xaml;Views\AuthenticatedView.xaml;Views\MainWindowView.xaml;
 
 True
 

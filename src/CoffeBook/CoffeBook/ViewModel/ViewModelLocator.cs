@@ -45,7 +45,7 @@ namespace CoffeBook.ViewModel
         {
             var navigationService = new NavigationService();
             navigationService.Configure(MainKey, new Uri("Views/MainWindow.xaml", UriKind.Relative));
-            navigationService.Configure(AuthenticatedKey, new Uri("Views/Authenticated.xaml", UriKind.Relative));
+            navigationService.Configure(AuthenticatedKey, new Uri("Views/AuthenticatedView.xaml", UriKind.Relative));
 
             SimpleIoc.Default.Register<ICustomNavigationService>(() => navigationService);
         }

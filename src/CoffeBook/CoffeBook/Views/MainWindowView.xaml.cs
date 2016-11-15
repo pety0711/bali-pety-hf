@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CoffeBook.ViewModels;
 
-namespace CoffeBook
+namespace CoffeBook.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindowView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindowView : UserControl
     {
-        public MainWindow()
+        public MainWindowView()
         {
             InitializeComponent();
-            ContentFrame.Source = new Uri("MainWindowView");
         }
     }
 }
