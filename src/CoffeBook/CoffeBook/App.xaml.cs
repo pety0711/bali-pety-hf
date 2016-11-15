@@ -15,19 +15,19 @@ namespace CoffeBook
     /// </summary>
     public partial class App : Application
     {
-        public static Frame CurrentFrame { get; set; }
+        //public static Frame CurrentFrame { get; set; }
 
-        public static NavigationService Navigation;
+        //public static NavigationService Navigation;
         
 
-        public static bool Navigate(Type sourcePage, object parameter)
-        {
-            return CurrentFrame.Navigate(sourcePage, parameter);
-        }
+        //public static bool Navigate(Type sourcePage, object parameter)
+        //{
+        //    return CurrentFrame.Navigate(sourcePage, parameter);
+        //}
 
-        public static void GoBack()
-        {
-            throw new NotImplementedException();
-        }
+        //public static void GoBack()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

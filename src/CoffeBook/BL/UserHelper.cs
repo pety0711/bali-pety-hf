@@ -17,7 +17,7 @@ namespace BL
             using (var context = new CoffeBookContext())
             {
                 DB.Entities.User user = context.Users.Where(u => u.Name == name).SingleOrDefault();
-                return convertUser(user);
+                return user == null ? null : convertUser(user);
             }
         }
 
@@ -35,6 +35,10 @@ namespace BL
 
         private static ICollection<Model.RecipeBook> convertRecipeBooks(ICollection<DB.Entities.RecipeBook> recipeBooks)
         {
+            if (recipeBooks == null)
+            {
+                return null;
+            }
             ICollection<Model.RecipeBook> rbs = new ObservableCollection<Model.RecipeBook>();
             foreach (DB.Entities.RecipeBook recipeBook in recipeBooks)
             {
@@ -52,6 +56,10 @@ namespace BL
 
         private static ICollection<Model.Recipe> convertRecipes(ICollection<DB.Entities.Recipe> recipes)
         {
+            if (recipes == null)
+            {
+                return null;
+            }
             ICollection<Model.Recipe> rs = new ObservableCollection<Model.Recipe>();
             foreach (DB.Entities.Recipe r in recipes) {
                 rs.Add(new BL.Model.Recipe
@@ -68,6 +76,10 @@ namespace BL
 
         private static Model.Coffee coffeeConverter(DB.Entities.Coffee coffee)
         {
+            if (coffee == null)
+            {
+                return null;
+            }
             Model.Coffee c = new Model.Coffee
             {
                 Id = coffee.Id,
@@ -79,7 +91,17 @@ namespace BL
 
         public static void RegisterUser(Model.User loginUser)
         {
-            throw new NotImplementedException();
+            using (var context = new CoffeBookContext())
+            {
+                DB.Entities.User newUser = new DB.Entities.User
+                {
+                    Name = loginUser.Name,
+                    Password = loginUser.Password
+                };
+
+                context.Users.Add(newUser);
+                context.SaveChanges();
+            }
         }
     }
 }

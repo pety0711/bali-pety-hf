@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CoffeBook"
         xmlns:viewmodel="clr-namespace:CoffeBook.ViewModels"
         mc:Ignorable="d"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
         Title="CoffeeBook" Height="680" Width="900">
     <StackPanel Margin="10" Orientation="Vertical">
         <Grid Margin="10">
@@ -33,11 +33,11 @@
                 </TextBlock.Style>
             </TextBlock>
             <Label Content="User name:" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2"/>
-            <TextBox Text="{Binding Path=Name, Mode=OneWay}" HorizontalAlignment="Left" Margin="3,3,0,3" MinWidth="100" Grid.Column="3"/>
+            <TextBox Text="{Binding Path=InputName, Mode=TwoWay}" HorizontalAlignment="Center" Margin="3,3,0,3" MinWidth="100" Grid.Column="3" TextAlignment="Center" VerticalAlignment="Center"/>
             <Label Content="Password:" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="4"/>
-            <TextBox Text="{Binding Path=Password, Mode=OneWay}" HorizontalAlignment="Left" Margin="3,3,0,3" MinWidth="100" Grid.Column="5"/>
-            <Button Command="{Binding LoginButtonCommand}" Content="Log in" Margin="3" MinWidth="70" Grid.Column="6"/>
-            <Button Command="{Binding RegisterButtonCommand}" Content="Register" Margin="3" MinWidth="70" Grid.Column="7"/>
+            <TextBox Text="{Binding Path=InputPassword, Mode=TwoWay}" HorizontalAlignment="Center" Margin="3,3,0,3" MinWidth="100" Grid.Column="5" TextAlignment="Center" VerticalAlignment="Center"/>
+            <Button Command="{Binding LoginButtonCommand}" Content="Log in" Margin="3" MinWidth="70" Grid.Column="6" VerticalAlignment="Center"/>
+            <Button Command="{Binding RegisterButtonCommand}" Content="Register" Margin="3" MinWidth="70" Grid.Column="7" VerticalAlignment="Center"/>
 
             <TextBlock Text="{Binding Path=ErrorLog, Mode=TwoWay}" HorizontalAlignment="Right" Grid.Row="1" Grid.ColumnSpan="8">
                 <TextBlock.Style>

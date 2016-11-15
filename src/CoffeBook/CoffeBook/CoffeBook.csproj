@@ -115,7 +115,9 @@
     <Compile Include="Model\RecipeBook.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="ViewModel\AuthenticatedViewModel.cs" />
+    <Compile Include="ViewModel\ICustomNavigationService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\NavigationService.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\Authenticated.xaml.cs">
       <DependentUpon>Authenticated.xaml</DependentUpon>

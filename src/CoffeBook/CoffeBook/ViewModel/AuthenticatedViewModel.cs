@@ -1,4 +1,6 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CoffeBook.ViewModel;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,11 @@ namespace CoffeBook.ViewModels
 {
     public class AuthenticatedViewModel : ViewModelBase
     {
+        private INavigationService navigationService;
+
+        public AuthenticatedViewModel(ICustomNavigationService navService)
+        {
+            this.navigationService = navService;
+        }
     }
 }

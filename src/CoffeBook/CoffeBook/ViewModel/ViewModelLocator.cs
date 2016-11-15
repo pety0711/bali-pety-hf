@@ -26,14 +26,14 @@ namespace CoffeBook.ViewModel
 {
     public class ViewModelLocator
     {
-        public const string MainKey = "Main";
-        public const string AuthenticatedKey = "Authenticated";
+        public const string MainKey = "MainViewModel";
+        public const string AuthenticatedKey = "AuthenticatedViewModel";
 
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            var navigationService = CreateNavigationService();
+            CreateNavigationService();
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<AuthenticatedViewModel>();
@@ -41,13 +41,16 @@ namespace CoffeBook.ViewModel
             Messenger.Default.Register<NotificationMessage>(this, NotifyUser);
         }
 
-        private INavigationService CreateNavigationService()
+        private void CreateNavigationService()
         {
-            var navService = new NavigationService();
-            navService.
+            var navigationService = new NavigationService();
+            navigationService.Configure(MainKey, new Uri("Views/MainWindow.xaml", UriKind.Relative));
+            navigationService.Configure(AuthenticatedKey, new Uri("Views/Authenticated.xaml", UriKind.Relative));
+
+            SimpleIoc.Default.Register<ICustomNavigationService>(() => navigationService);
         }
 
-        public MainViewModel Main
+        public MainViewModel MainViewModel
         {
             get
             {
@@ -55,7 +58,7 @@ namespace CoffeBook.ViewModel
             }
         }
 
-        public AuthenticatedViewModel Authenticated
+        public AuthenticatedViewModel AuthenticatedViewModel
         {
             get
             {

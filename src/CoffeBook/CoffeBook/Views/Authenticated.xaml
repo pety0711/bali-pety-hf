@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CoffeBook.Views"
         xmlns:viewmodel="clr-namespace:CoffeBook.ViewModels"
         mc:Ignorable="d"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Authenticated}"
+        DataContext="{Binding AuthenticatedViewModel, Source={StaticResource Locator}}"
         Title="CoffeBook" Height="680" Width="900">
     <StackPanel Margin="10" Orientation="Vertical">
         <Grid Margin="10">

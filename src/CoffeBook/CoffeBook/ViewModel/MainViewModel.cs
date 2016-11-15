@@ -2,6 +2,7 @@ using BL;
 using BL.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -24,14 +25,21 @@ namespace CoffeBook.ViewModel
         private User loginUser;
         private string errorLog;
         private ObservableCollection<Recipe> recipes;
+        private INavigationService navigationService;
 
-        public ICommand registerButtonCommand { get; private set; }
-        public ICommand loginButtonCommand { get; private set; }
+        public ICommand RegisterButtonCommand { get; private set; }
+        public ICommand LoginButtonCommand { get; private set; }
 
-        public MainViewModel()
+        public MainViewModel(ICustomNavigationService navService)
         {
-            registerButtonCommand = new RelayCommand(Register);
-            loginButtonCommand = new RelayCommand(Login);
+            DbHelper.TestDb();
+
+            LoginUser = new User { Name = "", Password = "" };
+
+            navigationService = navService;
+
+            RegisterButtonCommand = new RelayCommand(Register);
+            LoginButtonCommand = new RelayCommand(Login);
         }
 
         #region getters-setters
@@ -136,7 +144,7 @@ namespace CoffeBook.ViewModel
             }
             else
             {
-                
+                this.navigationService.NavigateTo(ViewModelLocator.AuthenticatedKey);
             }
         }
 

@@ -34,7 +34,6 @@ D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Cof
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Views\MainWindow.g.cs
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Views\Authenticated.g.cs
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\App.g.cs
-D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook_MarkupCompile.cache
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook_MarkupCompile.lref
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\bin\Debug\CoffeBook.exe
@@ -69,3 +68,4 @@ D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Vie
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook.g.resources
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook.Properties.Resources.resources
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\CoffeBook.csproj.GenerateResource.Cache
+D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\GeneratedInternalTypeHelper.g.cs
