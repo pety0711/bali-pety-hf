@@ -27,30 +27,38 @@ namespace CoffeBook.ViewModel
         private User loginUser;
         private string errorLog;
         private ObservableCollection<Recipe> recipes;
-        private INavigationService navigationService;
+        //private INavigationService navigationService;
 
         public ICommand RegisterButtonCommand { get; private set; }
         public ICommand LoginButtonCommand { get; private set; }
 
-        private ICollection<RecipeBook> recipebooks;
+        private ObservableCollection<RecipeBook> recipebooks;
 
-        public ICollection<RecipeBook> MyProperty
-        {
-            get { return recipebooks; }
-            set { recipebooks = value; }
-        }
+        private bool isAuthenticated;
 
 
-        public MainViewModel(ICustomNavigationService navService)
+        public MainViewModel()
         {
             DbHelper.TestDb();
 
             LoginUser = new User { Name = "", Password = "" };
+            errorLog = "";
+            recipebooks = new ObservableCollection<RecipeBook>();
+            recipes = new ObservableCollection<Recipe>();
+            isAuthenticated = false;
 
-            navigationService = navService;
+
+            //navigationService = navService;
 
             RegisterButtonCommand = new RelayCommand(Register);
             LoginButtonCommand = new RelayCommand(Login);
+
+            LoadEverything();
+        }
+
+        private void LoadEverything()
+        {
+            Recipes = (ObservableCollection<Recipe>)RecipeHelper.GetRecipes();
         }
 
         #region getters-setters
@@ -115,6 +123,35 @@ namespace CoffeBook.ViewModel
             }
         }
 
+        public bool IsAuthenticated
+        {
+            get { return isAuthenticated; }
+            set
+            {
+                isAuthenticated = value;
+                RaisePropertyChanged("IsAuthenticated");
+            }
+        }
+
+
+        public ObservableCollection<RecipeBook> RecipeBooks
+        {
+            get { return recipebooks; }
+            set
+            {
+
+                recipebooks.Clear();
+                if (value == null)
+                    return;
+                foreach (RecipeBook rb in value)
+                {
+                    recipebooks.Add(rb);
+                }
+                RaisePropertyChanged("RecipeBooks");
+            }
+        }
+
+
         #endregion
 
         #region commands
@@ -149,15 +186,7 @@ namespace CoffeBook.ViewModel
                 ErrorLog = "User not found!";
                 return;
             }
-            if (user_result.Password != LoginUser.Password)
-            {
-                ErrorLog = "Incorrect password";
-                return;
-            }
-            else
-            {
-                this.navigationService.NavigateTo(ViewModelLocator.AuthenticatedKey);
-            }
+            Authenticate(LoginUser);
         }
 
         private bool ValidateInput()
@@ -179,19 +208,27 @@ namespace CoffeBook.ViewModel
             }
         }
 
-        private void Authenticate(User loginUser)
+        private void Authenticate(User user)
         {
-            
+            User u = UserHelper.GetUser(user.Name);
+            if (u.Password != user.Password)
+            {
+                ErrorLog = "Incorrect password";
+                return;
+            }
+            else
+            {
+                IsAuthenticated = true;
+                LoginUser = u;
+                LoadRecipeBooks();
+            }
         }
 
-        private void LoadRecipeBooks() { }
-
-        private void loadRecipes()
+        private void LoadRecipeBooks()
         {
-            //TODO actually load recipes
-            
+            RecipeBooks = (ObservableCollection<RecipeBook>)LoginUser.RecipeBooks;
         }
-
+        
         #endregion
 
     }

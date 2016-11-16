@@ -12,7 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
-using CoffeBook.ViewModels;
+using CoffeBook.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
@@ -33,10 +33,10 @@ namespace CoffeBook.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            CreateNavigationService();
+            //CreateNavigationService();
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<AuthenticatedViewModel>();
+            //SimpleIoc.Default.Register<AuthenticatedViewModel>();
 
             Messenger.Default.Register<NotificationMessage>(this, NotifyUser);
         }
@@ -45,7 +45,7 @@ namespace CoffeBook.ViewModel
         {
             var navigationService = new NavigationService();
             navigationService.Configure(MainKey, new Uri("Views/MainWindow.xaml", UriKind.Relative));
-            navigationService.Configure(AuthenticatedKey, new Uri("Views/AuthenticatedView.xaml", UriKind.Relative));
+            //navigationService.Configure(AuthenticatedKey, new Uri("Views/AuthenticatedView.xaml", UriKind.Relative));
 
             SimpleIoc.Default.Register<ICustomNavigationService>(() => navigationService);
         }
@@ -58,13 +58,13 @@ namespace CoffeBook.ViewModel
             }
         }
 
-        public AuthenticatedViewModel AuthenticatedViewModel
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<AuthenticatedViewModel>();
-            }
-        }
+        //public AuthenticatedViewModel AuthenticatedViewModel
+        //{
+        //    get
+        //    {
+        //        return ServiceLocator.Current.GetInstance<AuthenticatedViewModel>();
+        //    }
+        //}
 
 
         public static void Cleanup()

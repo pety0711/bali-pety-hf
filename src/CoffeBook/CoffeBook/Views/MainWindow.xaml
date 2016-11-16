@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CoffeBook"
-        xmlns:viewmodel="clr-namespace:CoffeBook.ViewModels"
+        xmlns:viewmodel="clr-namespace:CoffeBook.ViewModel"
         mc:Ignorable="d"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
         Title="CoffeeBook" Height="680" Width="900">
@@ -22,7 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="CoffeeBook" MinWidth="150">
@@ -46,12 +46,47 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        <StackPanel x:Name="RecipeBooks" Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="8" Visibility="{Binding IsAuthenticated, Converter=AuthenticatedToVisibleConverter}">
-            
+        <StackPanel x:Name="RecipeBooks" Orientation="Horizontal" Height="100" Margin="0" Grid.Row="2" Grid.ColumnSpan="8" Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisible}}">
+            <Button Height="100" Width="100" Content="Add RecipeBook" Background="{x:Null}" Margin="6,0"/>
+            <ItemsControl ItemsSource="{Binding RecipeBooks}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Height="100" Width="100" Background="{x:Null}" Margin="6,0">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
-        <Grid x:Name="Recipes" Grid.Row="3" Grid.ColumnSpan="8">
-
-        </Grid>
+        <ScrollViewer Grid.Row="3" Grid.ColumnSpan="8" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid>  
+                <ItemsControl x:Name="Recipes" ItemsSource="{Binding Recipes}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="3"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Height="130" Width="130" Margin="5">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Stretch"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 
 </Window>
