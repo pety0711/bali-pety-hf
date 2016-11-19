@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoffeBookContext.cs" />
+    <Compile Include="CoffeeBookInitializer.cs" />
     <Compile Include="Entities\Coffee.cs" />
     <Compile Include="Entities\Recipe.cs" />
     <Compile Include="Entities\RecipeBook.cs" />

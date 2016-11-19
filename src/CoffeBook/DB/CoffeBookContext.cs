@@ -15,9 +15,17 @@ namespace DB
         public DbSet<User> Users { get; set; }
         public DbSet<RecipeBook> RecipeBooks { get; set; }
 
+        private static bool recreateDatabase = true; 
+
         public CoffeBookContext()
         {
-            Database.CreateIfNotExists();
+            if (recreateDatabase)
+            {
+                Database.Delete();
+                recreateDatabase = false;
+            }
+            Configuration.LazyLoadingEnabled = false;
+            Database.SetInitializer(new CoffeeBookInitializer());
         }
     }
 }
