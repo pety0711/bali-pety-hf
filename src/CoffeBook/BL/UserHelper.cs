@@ -16,7 +16,10 @@ namespace BL
         {
             using (var context = new CoffeBookContext())
             {
-                DB.Entities.User user = context.Users.Where(u => u.Name == name).SingleOrDefault();
+                DB.Entities.User user 
+                    = context.Users.Include("RecipeBooks")
+                                    .Where(u => u.Name == name)
+                                    .FirstOrDefault();
                 return user == null ? null : convertUser(user);
             }
         }

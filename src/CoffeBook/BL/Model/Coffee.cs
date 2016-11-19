@@ -24,6 +24,15 @@ namespace BL.Model
             }
         }
 
+        private string description;
+
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
+        }
+
+
         private byte[] picture;
 
         public byte[] Picture

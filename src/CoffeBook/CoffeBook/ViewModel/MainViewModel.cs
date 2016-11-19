@@ -7,34 +7,116 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace CoffeBook.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         private User loginUser;
         private string errorLog;
         private ObservableCollection<Recipe> recipes;
-        //private INavigationService navigationService;
+        private ObservableCollection<Coffee> coffees;
 
         public ICommand RegisterButtonCommand { get; private set; }
         public ICommand LoginButtonCommand { get; private set; }
+        public ICommand LogoutButtonCommand { get; private set; }
+        public ICommand ShowPropertiesButtonCommand { get; private set; }
+        public ICommand ClosePropertiesButtonCommand { get; private set; }
+        public ICommand CancelPropertiesButtonCommand { get; private set; }
+        public ICommand DeletePropertiesButtonCommand { get; private set; }
 
         private ObservableCollection<RecipeBook> recipebooks;
 
         private bool isAuthenticated;
+        private bool showProperties;
+        private string propertiesParameter;
+
+        private object propertiesObject;
+
+        private string propertiesTitle;
+
+        public string PropertiesTitle
+        {
+            get { return propertiesTitle; }
+            set
+            {
+                propertiesTitle = value;
+                RaisePropertyChanged("PropertiesTitle");
+            }
+        }
+
+        private string propertiesName;
+
+        public string PropertiesName
+        {
+            get { return propertiesName; }
+            set
+            {
+                propertiesName = value;
+                RaisePropertyChanged("PropertiesName");
+            }
+        }
+
+        private string propertiesDescription;
+
+        public string PropertiesDescription
+        {
+            get { return propertiesDescription; }
+            set
+            {
+                propertiesDescription = value;
+                RaisePropertyChanged("PropertiesDescription");
+            }
+        }
+
+        private List<string> propertiesRecipes;
+
+        public List<string> PropertiesRecipes
+        {
+            get { return propertiesRecipes; }
+            set
+            {
+                propertiesRecipes = value;
+                RaisePropertyChanged("PropertiesRecipes");
+            }
+        }
+
+        private bool showPropertiesRecipes;
+
+        public bool ShowPropertiesRecipes
+        {
+            get { return showPropertiesRecipes; }
+            set
+            {
+                showPropertiesRecipes = value;
+                RaisePropertyChanged("ShowPropertiesRecipes");
+            }
+        }
+
+        private List<string> propertiesCoffees;
+
+        public List<string> PropertiesCoffees
+        {
+            get { return propertiesCoffees; }
+            set
+            {
+                propertiesCoffees = value;
+                RaisePropertyChanged("PropertiesCoffees");
+            }
+        }
+
+        private bool showPropertiesCoffees;
+
+        public bool ShowPropertiesCoffees
+        {
+            get { return showPropertiesCoffees; }
+            set
+            {
+                showPropertiesCoffees = value;
+                RaisePropertyChanged("ShowPropertiesCoffees");
+            }
+        }
 
 
         public MainViewModel()
@@ -45,18 +127,25 @@ namespace CoffeBook.ViewModel
             errorLog = "";
             recipebooks = new ObservableCollection<RecipeBook>();
             recipes = new ObservableCollection<Recipe>();
+            coffees = new ObservableCollection<Coffee>();
             isAuthenticated = false;
+            showProperties = false;
+            propertiesParameter = "";
+
+            RegisterButtonCommand = new RelayCommand<object>(Register);
+            LoginButtonCommand = new RelayCommand<object>(Login);
+            LogoutButtonCommand = new RelayCommand<object>(Logout);
+            ShowPropertiesButtonCommand = new RelayCommand<object>(ShowPropertiesCommand);
+            CancelPropertiesButtonCommand = new RelayCommand(CancelPropertiesCommand);
+            ClosePropertiesButtonCommand = new RelayCommand(ClosePropertiesCommand);
+            DeletePropertiesButtonCommand = new RelayCommand(DeletePropertiesCommand);
 
 
-            //navigationService = navService;
-
-            RegisterButtonCommand = new RelayCommand(Register);
-            LoginButtonCommand = new RelayCommand(Login);
-
-            LoadEverything();
+            LoadRecipes();
+            LoadCoffees();
         }
 
-        private void LoadEverything()
+        private void LoadRecipes()
         {
             Recipes = (ObservableCollection<Recipe>)RecipeHelper.GetRecipes();
         }
@@ -98,28 +187,31 @@ namespace CoffeBook.ViewModel
             }
         }
 
-
-        public string InputPassword
-        {
-            get { return LoginUser.Password; }
-            set
-            {
-                LoginUser.Password = value;
-                RaisePropertyChanged("InputPassword");
-            }
-        }
-
         public ObservableCollection<Recipe> Recipes
         {
             get { return recipes; }
             set
             {
                 recipes.Clear();
-                foreach(Recipe r in value)
+                foreach (Recipe r in value)
                 {
                     recipes.Add(r);
                 }
                 RaisePropertyChanged("Recipes");
+            }
+        }
+
+        public ObservableCollection<Coffee> Coffees
+        {
+            get { return coffees; }
+            set
+            {
+                coffees.Clear();
+                foreach (Coffee c in value)
+                {
+                    coffees.Add(c);
+                }
+                RaisePropertyChanged("Coffees");
             }
         }
 
@@ -133,6 +225,30 @@ namespace CoffeBook.ViewModel
             }
         }
 
+        public bool IsNotAuthenticated
+        {
+            get { return !isAuthenticated; }
+        }
+
+        public bool ShowProperties
+        {
+            get { return showProperties; }
+            set
+            {
+                showProperties = value;
+                RaisePropertyChanged("ShowProperties");
+            }
+        }
+
+        public string PropertiesParameter
+        {
+            get { return propertiesParameter; }
+            set
+            {
+                propertiesParameter = value;
+                RaisePropertyChanged("PropertiesParameter");
+            }
+        }
 
         public ObservableCollection<RecipeBook> RecipeBooks
         {
@@ -156,16 +272,18 @@ namespace CoffeBook.ViewModel
 
         #region commands
 
-        public void Register()
+        public void Register(object obj)
         {
-            var valid = ValidateInput();
+            PasswordBox pwBox = obj as PasswordBox;
+
+            var valid = ValidateInput(pwBox.Password);
             if (!valid)
                 return;
             var user_result = UserHelper.GetUser(LoginUser.Name);
             if (user_result == null)
             {
                 UserHelper.RegisterUser(LoginUser);
-                Authenticate(LoginUser);
+                Authenticate(LoginUser.Name, pwBox.Password);
             }
             else
             {
@@ -174,9 +292,11 @@ namespace CoffeBook.ViewModel
             }
         }
 
-        public void Login()
+        public void Login(object obj)
         {
-            var valid = ValidateInput();
+            PasswordBox pwBox = obj as PasswordBox;
+
+            var valid = ValidateInput(pwBox.Password);
             if (!valid)
                 return;
 
@@ -186,17 +306,17 @@ namespace CoffeBook.ViewModel
                 ErrorLog = "User not found!";
                 return;
             }
-            Authenticate(LoginUser);
+            Authenticate(LoginUser.Name, pwBox.Password);
         }
 
-        private bool ValidateInput()
+        private bool ValidateInput(string password)
         {
             if (string.IsNullOrWhiteSpace(InputName))
             {
                 ErrorLog = "Username field is empty or the input is invalid!";
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(InputPassword))
+            if (string.IsNullOrWhiteSpace(password))
             {
                 ErrorLog = "Password field is empty or the input is invalid!";
                 return false;
@@ -208,10 +328,10 @@ namespace CoffeBook.ViewModel
             }
         }
 
-        private void Authenticate(User user)
+        private void Authenticate(string userName, string password)
         {
-            User u = UserHelper.GetUser(user.Name);
-            if (u.Password != user.Password)
+            User u = UserHelper.GetUser(userName);
+            if (u.Password != password)
             {
                 ErrorLog = "Incorrect password";
                 return;
@@ -224,12 +344,244 @@ namespace CoffeBook.ViewModel
             }
         }
 
+        private void Logout(object obj)
+        {
+            InputName = "";
+            PasswordBox pwBox = obj as PasswordBox;
+            pwBox.Password = "";
+            IsAuthenticated = false;
+        }
+
         private void LoadRecipeBooks()
         {
             RecipeBooks = (ObservableCollection<RecipeBook>)LoginUser.RecipeBooks;
         }
-        
-        #endregion
 
+        public void ShowPropertiesCommand(object obj)
+        {
+            if (obj is string)
+            {
+                string parameter = obj as string;
+
+                switch (parameter)
+                {
+                    case "AddRecipeBook":
+                        NewRecipeBook();
+                        break;
+                    case "AddRecipe":
+                        NewRecipe();
+                        break;
+                    case "NewCoffee":
+                        NewCoffee();
+                        break;
+                }
+
+            }
+            else
+            {
+                EditProperties(obj);
+            }
+            ShowProperties = true;
+        }
+
+        public void NewRecipeBook()
+        {
+            propertiesObject = new RecipeBook();
+            PropertiesTitle = "Add new recipe book";
+            PropertiesName = "";
+            PropertiesDescription = "";
+
+            List<string> rs = new List<string>();
+            foreach (Recipe r in recipes)
+            {
+                rs.Add(r.Name);
+            }
+
+            PropertiesRecipes = rs;
+            ShowPropertiesRecipes = true;
+            ShowPropertiesCoffees = false;
+        }
+
+        public void NewRecipe()
+        {
+            propertiesObject = new Recipe();
+            PropertiesTitle = "Add new recipe";
+            PropertiesName = "";
+            PropertiesDescription = "";
+
+            List<string> cs = new List<string>();
+            foreach (Coffee c in CoffeeHelper.GetCoffees())
+            {
+                cs.Add(c.Name);
+            }
+
+            PropertiesCoffees = cs;
+            ShowPropertiesRecipes = false;
+            ShowPropertiesCoffees = true;
+        }
+
+        public void NewCoffee()
+        {
+            propertiesObject = new Coffee();
+            PropertiesTitle = "Add new coffee";
+            PropertiesName = "";
+            PropertiesDescription = "";
+            
+            ShowPropertiesRecipes = false;
+            ShowPropertiesCoffees = false;
+        }
+
+        private void EditProperties(object obj)
+        {
+            propertiesObject = obj;
+            if (obj is RecipeBook)
+            {
+                EditRecipeBook(obj as RecipeBook);
+            }
+            else if (obj is Recipe)
+            {
+                EditRecipe(obj as Recipe);
+            }
+            else if (obj is Coffee)
+            {
+                EditCoffee(obj as Coffee);
+            }
+        }
+
+        private void EditCoffee(Coffee coffee)
+        {
+            PropertiesTitle = "Edit Coffee";
+            PropertiesName = coffee.Name == null ? "" : coffee.Name;
+            PropertiesDescription = coffee.Description == null ? "" : coffee.Description;
+
+            ShowPropertiesRecipes = false;
+            ShowPropertiesCoffees = false;
+        }
+
+        private void EditRecipe(Recipe recipe)
+        {
+            PropertiesTitle = "Edit Recipe";
+            PropertiesName = recipe.Name == null ? "" : recipe.Name;
+            PropertiesDescription = recipe.Description == null ? "" : recipe.Description;
+
+            List<string> cs = new List<string>();
+            foreach (Coffee c in CoffeeHelper.GetCoffees())
+            {
+                cs.Add(c.Name);
+            }
+
+            if (recipe.CoffeType != null)
+            {
+                cs.Remove(recipe.CoffeType.Name);
+                cs.Insert(0, recipe.CoffeType.Name);
+            }
+
+            PropertiesCoffees = cs;
+            ShowPropertiesRecipes = false;
+            ShowPropertiesCoffees = true;
+        }
+        private void EditRecipeBook(RecipeBook recipeBook)
+        {
+            PropertiesTitle = "Edit Recipe Book";
+            PropertiesName = recipeBook.Name == null ? "" : recipeBook.Name;
+            PropertiesDescription = recipeBook.Description == null ? "" : recipeBook.Description;
+
+            List<string> rs = new List<string>();
+            foreach (Recipe r in recipes)
+            {
+                rs.Add(r.Name);
+            }
+
+            if (recipeBook.Recipes != null && recipeBook.Recipes.Count > 0)
+            {
+                foreach (var r in recipeBook.Recipes)
+                {
+                    rs.Remove(r.Name);
+                    rs.Insert(0, r.Name);
+                }
+            }
+
+            PropertiesRecipes = rs;
+            ShowPropertiesRecipes = true;
+            ShowPropertiesCoffees = false;
+        }
+
+
+        private void DeletePropertiesCommand()
+        {
+            if (propertiesObject is RecipeBook)
+            {
+                RecipeBookHelper.RemoveRecipeBook(propertiesObject as RecipeBook);
+                LoadRecipeBooks();
+            }
+            else if (propertiesObject is Recipe)
+            {
+                RecipeHelper.RemoveRecipe(propertiesObject as Recipe);
+                LoadRecipes();
+            }
+            else if (propertiesObject is Coffee)
+            {
+                CoffeeHelper.RemoveCoffee(propertiesObject as Coffee);
+                LoadCoffees();
+            }
+            ShowProperties = false;
+        }
+
+        private void LoadCoffees()
+        {
+            Coffees = (ObservableCollection<Coffee>) CoffeeHelper.GetCoffees();
+        }
+
+        private void ClosePropertiesCommand()
+        {
+            if (propertiesObject is RecipeBook)
+            {
+                SaveRecipeBook();
+            }
+            else if (propertiesObject is Recipe)
+            {
+                SaveRecipe();
+            }
+            else if (propertiesObject is Coffee)
+            {
+                SaveCoffee();
+            }
+            ShowProperties = false;
+        }
+
+        private void SaveCoffee()
+        {
+            Coffee coffee = propertiesObject as Coffee;
+            coffee.Name = PropertiesName;
+            coffee.Description = PropertiesDescription;
+            CoffeeHelper.AddCoffee(coffee);
+
+        }
+
+        private void SaveRecipe()
+        {
+            Recipe recipe = propertiesObject as Recipe;
+            recipe.Name = PropertiesName;
+            recipe.Description = PropertiesDescription;
+            // TODO coffetype
+            RecipeHelper.AddRecipe(recipe);
+        }
+
+        private void SaveRecipeBook()
+        {
+            RecipeBook recipeBook = propertiesObject as RecipeBook;
+            recipeBook.Name = PropertiesName;
+            recipeBook.Description = PropertiesDescription;
+            // TODO recipes!
+            RecipeBookHelper.AddRecipeBook(recipeBook);
+            LoginUser.RecipeBooks.Add(recipeBook);
+        }
+
+        private void CancelPropertiesCommand()
+        {
+            ShowProperties = false;
+        }
+
+        #endregion
     }
 }

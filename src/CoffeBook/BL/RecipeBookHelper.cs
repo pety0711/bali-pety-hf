@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BL.Model;
 
 namespace BL
 {
@@ -35,6 +36,16 @@ namespace BL
         public static void GetRecipeBooks(long id)
         {
             
+        }
+
+        public static void RemoveRecipeBook(Model.RecipeBook recipeBook)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void AddRecipeBook(Model.RecipeBook recipeBook)
+        {
+            throw new NotImplementedException();
         }
     }
 }

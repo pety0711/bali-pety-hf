@@ -15,7 +15,7 @@ namespace BL
         {
             using (var context = new CoffeBookContext())
             {
-                return convertRecipes(context.Recipes.ToList());
+                return convertRecipes(context.Recipes.Include("CoffeeType").ToList());
             }
         }
 
@@ -67,5 +67,14 @@ namespace BL
             return rs;
         }
 
+        public static void RemoveRecipe(Recipe recipe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void AddRecipe(Recipe recipe)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
