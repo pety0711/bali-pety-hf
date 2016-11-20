@@ -1,0 +1,31 @@
+﻿using System.Collections.Generic;
+using DB.Entities;
+
+namespace BL.DTOs
+{
+    public class UserDto
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Password { get; set; }
+        public IList<RecipeBookDto> RecipeBooks { get; set; }
+
+        public UserDto()
+        {
+            Id = -1;
+        }
+
+        public UserDto(User userEntity)
+        {
+            Id = userEntity.Id;
+            Name = userEntity.Name;
+            Password = userEntity.Password;
+            RecipeBooks = new List<RecipeBookDto>();
+            foreach (var item in userEntity.RecipeBooks)
+            {
+                RecipeBooks.Add(new RecipeBookDto(item));
+            }
+        }
+
+    }
+}

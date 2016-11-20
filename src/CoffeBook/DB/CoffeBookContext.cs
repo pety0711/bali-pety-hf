@@ -15,14 +15,14 @@ namespace DB
         public DbSet<User> Users { get; set; }
         public DbSet<RecipeBook> RecipeBooks { get; set; }
 
-        private static bool recreateDatabase = true; 
+        private static bool s_recreateDatabase = true; 
 
         public CoffeBookContext()
         {
-            if (recreateDatabase)
+            if (s_recreateDatabase)
             {
                 Database.Delete();
-                recreateDatabase = false;
+                s_recreateDatabase = false;
             }
             Configuration.LazyLoadingEnabled = false;
             Database.SetInitializer(new CoffeeBookInitializer());
