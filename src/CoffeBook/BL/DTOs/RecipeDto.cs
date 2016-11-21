@@ -18,7 +18,7 @@ namespace BL.DTOs
         public RecipeDto(Recipe recipeEntity)
         {
             Id = recipeEntity.Id;
-            CoffeeType = new CoffeeDto(recipeEntity.CoffeeType);
+            CoffeeType = recipeEntity.CoffeeType == null ? null : new CoffeeDto(recipeEntity.CoffeeType);
             Picture = recipeEntity.Picture;
             Name = recipeEntity.Name;
             Description = recipeEntity.Description;

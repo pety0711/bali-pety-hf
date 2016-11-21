@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BL.DTOs;
@@ -167,6 +168,17 @@ namespace BL
                 using (var db = new CoffeBookContext())
                 {
                     return new UserDto(db.Users.SingleOrDefault(x => x.Id == id));
+                }
+            });
+        }
+
+        public async Task<UserDto> GetUserAsync(string name)
+        {
+            return await Task.Run(() =>
+            {
+                using (var db = new CoffeBookContext())
+                {
+                    return new UserDto(db.Users.SingleOrDefault(x => x.Name == name));
                 }
             });
         }

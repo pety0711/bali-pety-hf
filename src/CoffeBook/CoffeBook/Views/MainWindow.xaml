@@ -194,51 +194,53 @@
                     </ItemsControl>
                 </Grid>
             </ScrollViewer>
-            <Grid Margin="5" Grid.Column="2" Grid.RowSpan="3" 
-                  Visibility="{Binding ShowProperties, Converter={StaticResource BoolToVisible}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Label Content="{Binding PropertiesTitle}" Grid.ColumnSpan="2" 
+            <Border BorderBrush="Black" BorderThickness="2" Margin="5" Grid.Column="2" Grid.RowSpan="3">
+                <Grid Visibility="{Binding ShowProperties, Converter={StaticResource BoolToVisible}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="{Binding PropertiesTitle}" Grid.ColumnSpan="2" 
                        Height="40" FontSize="16"/>
-                <Label Content="Name" Grid.Row="1"/>
-                <TextBox Text="{Binding PropertiesName, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" 
+                    <Label Content="Name" Grid.Row="1"/>
+                    <TextBox Text="{Binding PropertiesName, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" 
                          MinWidth="100" VerticalAlignment="Center"/>
-                <Label Content="Description" Grid.Row="2"/>
-                <TextBox Text="{Binding PropertiesDescription, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" 
+                    <Label Content="Description" Grid.Row="2"/>
+                    <TextBox Text="{Binding PropertiesDescription, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" 
+                         Visibility="{Binding ShowPropertiesDescription,Converter={StaticResource BoolToVisible}}"
                          MinWidth="100" Height="55" VerticalAlignment="Center"/>
-                <Label Content="Recipes" Grid.Row="3" 
+                    <Label Content="Recipes" Grid.Row="3" 
                        Visibility="{Binding ShowPropertiesRecipes,Converter={StaticResource BoolToVisible}}"/>
-                <ListBox ItemsSource="{Binding PropertiesRecipes}" Height="100" 
+                    <ListBox ItemsSource="{Binding PropertiesRecipes}" Height="100" 
                          Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" MinWidth="100" 
                          Visibility="{Binding ShowPropertiesRecipes,Converter={StaticResource BoolToVisible}}"/>
-                <Label Content="Coffee type" Grid.Row="3" 
+                    <Label Content="Coffee type" Grid.Row="3" 
                        Visibility="{Binding ShowPropertiesCoffees,Converter={StaticResource BoolToVisible}}"/>
-                <ComboBox ItemsSource="{Binding PropertiesCoffees}" Grid.Row="3" Grid.Column="1"
+                    <ComboBox ItemsSource="{Binding PropertiesCoffees}" Grid.Row="3" Grid.Column="1"
                           VerticalAlignment="Top" MinWidth="100"
                           Visibility="{Binding ShowPropertiesCoffees,Converter={StaticResource BoolToVisible}}"/>
 
-                <Button Content="Delete" Command="{Binding DeletePropertiesButtonCommand}" 
+                    <Button Content="Delete" Command="{Binding DeletePropertiesButtonCommand}" 
                         Grid.Row="4" HorizontalAlignment="Left"
                         Width="60" Margin="3"/>
-                <StackPanel Grid.Row="4" Grid.Column="1" 
+                    <StackPanel Grid.Row="4" Grid.Column="1" 
                             Orientation="Horizontal" Margin="0">
-                    <Button Content="Done" 
+                        <Button Content="Done" 
                             Command="{Binding ClosePropertiesButtonCommand}" 
                             Width="60" Margin="3,3,3,3"/>
-                    <Button Content="Cancel"
+                        <Button Content="Cancel"
                             Command="{Binding CancelPropertiesButtonCommand}"
                             Width="60" Margin="0,3,3,3"/>
-                </StackPanel>
-            </Grid>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
     </StackPanel>
 </Window>

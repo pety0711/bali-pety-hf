@@ -7,7 +7,7 @@ using BL.Interfaces;
 
 namespace BL
 {
-    class CoffeeBookDbHandlerFactory : IDbHandlerFactory<CoffeeBookDbHandler>
+    public class CoffeeBookDbHandlerFactory : IDbHandlerFactory<CoffeeBookDbHandler>
     {
         public CoffeeBookDbHandler GetDbHandler()
         {

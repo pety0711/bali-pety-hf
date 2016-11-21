@@ -110,6 +110,10 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CommandHandler.cs" />
     <Compile Include="Converters\BoolToVisibility.cs" />
+    <Compile Include="Helpers\CoffeeHelper.cs" />
+    <Compile Include="Helpers\RecipeBookHelper.cs" />
+    <Compile Include="Helpers\RecipeHelper.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Model\Coffee.cs" />
     <Compile Include="Model\Recipe.cs" />
     <Compile Include="Model\RecipeBook.cs" />
@@ -149,7 +153,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

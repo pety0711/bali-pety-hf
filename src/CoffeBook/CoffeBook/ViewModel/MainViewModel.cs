@@ -1,5 +1,4 @@
 using BL;
-using BL.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Views;
@@ -8,6 +7,8 @@ using System.Windows.Input;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using CoffeBook.Model;
+using CoffeBook.Helpers;
 
 namespace CoffeBook.ViewModel
 {
@@ -41,6 +42,8 @@ namespace CoffeBook.ViewModel
             get { return propertiesTitle; }
             set
             {
+                if (value == propertiesTitle)
+                    return;
                 propertiesTitle = value;
                 RaisePropertyChanged("PropertiesTitle");
             }
@@ -53,6 +56,8 @@ namespace CoffeBook.ViewModel
             get { return propertiesName; }
             set
             {
+                if (value == propertiesName)
+                    return;
                 propertiesName = value;
                 RaisePropertyChanged("PropertiesName");
             }
@@ -65,6 +70,8 @@ namespace CoffeBook.ViewModel
             get { return propertiesDescription; }
             set
             {
+                if (value == propertiesDescription)
+                    return;
                 propertiesDescription = value;
                 RaisePropertyChanged("PropertiesDescription");
             }
@@ -89,10 +96,27 @@ namespace CoffeBook.ViewModel
             get { return showPropertiesRecipes; }
             set
             {
+                if (value == showPropertiesRecipes)
+                    return;
                 showPropertiesRecipes = value;
                 RaisePropertyChanged("ShowPropertiesRecipes");
             }
         }
+
+        private bool showPropertiesDescription;
+
+        public bool ShowPropertiesDescription
+        {
+            get { return showPropertiesDescription; }
+            set
+            {
+                if (value == showPropertiesDescription)
+                    return;
+                showPropertiesDescription = value;
+                RaisePropertyChanged("ShowPropertiesRecipes");
+            }
+        }
+
 
         private List<string> propertiesCoffees;
 
@@ -113,6 +137,8 @@ namespace CoffeBook.ViewModel
             get { return showPropertiesCoffees; }
             set
             {
+                if (value == showPropertiesCoffees)
+                    return;
                 showPropertiesCoffees = value;
                 RaisePropertyChanged("ShowPropertiesCoffees");
             }
@@ -121,8 +147,6 @@ namespace CoffeBook.ViewModel
 
         public MainViewModel()
         {
-            DbHelper.TestDb();
-
             LoginUser = new User { Name = "", Password = "" };
             errorLog = "";
             recipebooks = new ObservableCollection<RecipeBook>();
@@ -147,7 +171,7 @@ namespace CoffeBook.ViewModel
 
         private void LoadRecipes()
         {
-            Recipes = (ObservableCollection<Recipe>)RecipeHelper.GetRecipes();
+            Recipes = (ObservableCollection<Recipe>) RecipeHelper.GetRecipes().Result;
         }
 
         #region getters-setters
@@ -182,6 +206,8 @@ namespace CoffeBook.ViewModel
             get { return LoginUser.Name; }
             set
             {
+                if (value == LoginUser.Name)
+                    return;
                 LoginUser.Name = value;
                 RaisePropertyChanged("InputName");
             }
@@ -220,6 +246,8 @@ namespace CoffeBook.ViewModel
             get { return isAuthenticated; }
             set
             {
+                if (value == isAuthenticated)
+                    return;
                 isAuthenticated = value;
                 RaisePropertyChanged("IsAuthenticated");
             }
@@ -235,6 +263,8 @@ namespace CoffeBook.ViewModel
             get { return showProperties; }
             set
             {
+                if (value == showProperties)
+                    return;
                 showProperties = value;
                 RaisePropertyChanged("ShowProperties");
             }
@@ -245,6 +275,8 @@ namespace CoffeBook.ViewModel
             get { return propertiesParameter; }
             set
             {
+                if (value == propertiesParameter)
+                    return;
                 propertiesParameter = value;
                 RaisePropertyChanged("PropertiesParameter");
             }
@@ -330,7 +362,7 @@ namespace CoffeBook.ViewModel
 
         private void Authenticate(string userName, string password)
         {
-            User u = UserHelper.GetUser(userName);
+            User u = UserHelper.GetUser(userName).Result;
             if (u.Password != password)
             {
                 ErrorLog = "Incorrect password";
@@ -398,6 +430,7 @@ namespace CoffeBook.ViewModel
             }
 
             PropertiesRecipes = rs;
+            ShowPropertiesDescription = true;
             ShowPropertiesRecipes = true;
             ShowPropertiesCoffees = false;
         }
@@ -410,12 +443,13 @@ namespace CoffeBook.ViewModel
             PropertiesDescription = "";
 
             List<string> cs = new List<string>();
-            foreach (Coffee c in CoffeeHelper.GetCoffees())
+            foreach (Coffee c in CoffeeHelper.GetCoffees().Result)
             {
                 cs.Add(c.Name);
             }
 
             PropertiesCoffees = cs;
+            ShowPropertiesDescription = true;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = true;
         }
@@ -425,8 +459,8 @@ namespace CoffeBook.ViewModel
             propertiesObject = new Coffee();
             PropertiesTitle = "Add new coffee";
             PropertiesName = "";
-            PropertiesDescription = "";
-            
+
+            ShowPropertiesDescription = false;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = false;
         }
@@ -452,8 +486,8 @@ namespace CoffeBook.ViewModel
         {
             PropertiesTitle = "Edit Coffee";
             PropertiesName = coffee.Name == null ? "" : coffee.Name;
-            PropertiesDescription = coffee.Description == null ? "" : coffee.Description;
-
+            
+            ShowPropertiesDescription = false;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = false;
         }
@@ -465,7 +499,7 @@ namespace CoffeBook.ViewModel
             PropertiesDescription = recipe.Description == null ? "" : recipe.Description;
 
             List<string> cs = new List<string>();
-            foreach (Coffee c in CoffeeHelper.GetCoffees())
+            foreach (Coffee c in CoffeeHelper.GetCoffees().Result)
             {
                 cs.Add(c.Name);
             }
@@ -477,6 +511,8 @@ namespace CoffeBook.ViewModel
             }
 
             PropertiesCoffees = cs;
+
+            ShowPropertiesDescription = true;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = true;
         }
@@ -502,6 +538,7 @@ namespace CoffeBook.ViewModel
             }
 
             PropertiesRecipes = rs;
+            ShowPropertiesDescription = true;
             ShowPropertiesRecipes = true;
             ShowPropertiesCoffees = false;
         }
@@ -529,7 +566,7 @@ namespace CoffeBook.ViewModel
 
         private void LoadCoffees()
         {
-            Coffees = (ObservableCollection<Coffee>) CoffeeHelper.GetCoffees();
+            Coffees = (ObservableCollection<Coffee>) CoffeeHelper.GetCoffees().Result;
         }
 
         private void ClosePropertiesCommand()
@@ -549,31 +586,30 @@ namespace CoffeBook.ViewModel
             ShowProperties = false;
         }
 
-        private void SaveCoffee()
+        private async void SaveCoffee()
         {
             Coffee coffee = propertiesObject as Coffee;
             coffee.Name = PropertiesName;
-            coffee.Description = PropertiesDescription;
-            CoffeeHelper.AddCoffee(coffee);
+            await CoffeeHelper.AddCoffee(coffee);
 
         }
 
-        private void SaveRecipe()
+        private async void SaveRecipe()
         {
             Recipe recipe = propertiesObject as Recipe;
             recipe.Name = PropertiesName;
             recipe.Description = PropertiesDescription;
             // TODO coffetype
-            RecipeHelper.AddRecipe(recipe);
+            await RecipeHelper.AddRecipe(recipe);
         }
 
-        private void SaveRecipeBook()
+        private async void SaveRecipeBook()
         {
             RecipeBook recipeBook = propertiesObject as RecipeBook;
             recipeBook.Name = PropertiesName;
             recipeBook.Description = PropertiesDescription;
             // TODO recipes!
-            RecipeBookHelper.AddRecipeBook(recipeBook);
+            await RecipeBookHelper.AddRecipeBook(recipeBook);
             LoginUser.RecipeBooks.Add(recipeBook);
         }
 
