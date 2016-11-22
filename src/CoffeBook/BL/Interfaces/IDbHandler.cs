@@ -10,6 +10,12 @@ namespace BL.Interfaces
 {
     interface IDbHandler
     {
+        Task<BlCallResult<RecipeDto>> AddRecipeToCoffee(CoffeeDto coffee, RecipeDto recipe);
+        Task<BlCallResult<RecipeBookDto>> AddRecipeToRecipeBook(RecipeBookDto recipeBook, RecipeDto recipe);
+        Task<BlCallResult<RecipeBookDto>> RemoveRecipeFromRecipeBook(RecipeBookDto recipeBook, RecipeDto recipe);
+        Task<BlCallResult<IList<CoffeeDto>>> SearchForCoffee(string searchTerm);
+        Task<BlCallResult<IList<RecipeDto>>> GetCoffeeRecipes(CoffeeDto coffeeDto);
+
         Task<CoffeeDto> AddCoffeeAsync(CoffeeDto newCoffee);
         Task<CoffeeDto> GetCoffeeAsync(long id);
         Task<IList<CoffeeDto>> GetAllCoffeesAsync();
