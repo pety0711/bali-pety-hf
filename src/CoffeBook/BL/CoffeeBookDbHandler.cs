@@ -9,8 +9,139 @@ using DB.Entities;
 
 namespace BL
 {
+
     public class CoffeeBookDbHandler : IDbHandler
     {
+
+        public async Task<BlCallResult<RecipeDto>> AddRecipeToCoffee(CoffeeDto coffee, RecipeDto recipe)
+        {
+            using (var db = new CoffeBookContext())
+            {
+                var coffeeFromDb = db.Coffes.SingleOrDefault(x => x.Id == coffee.Id);
+                if (coffeeFromDb == null)
+                {
+                    try
+                    {
+                        await AddCoffeeAsync(coffee);
+                        coffeeFromDb = db.Coffes.SingleOrDefault(x => x.Id == coffee.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        return new BlCallResult<RecipeDto>(BlCallResult.BlResult.CoffeeError, e);
+                    }
+                }
+                var recipeFromDb = db.Recipes.SingleOrDefault(x => x.Id == recipe.Id);
+                if (recipeFromDb != null)
+                {
+                    recipeFromDb.CoffeeType = coffeeFromDb;
+                }
+                else
+                {
+                    try
+                    {
+                        var newRecipe = await AddRecipeAsync(recipe);
+                        newRecipe.CoffeeType = coffee;
+                        recipe = newRecipe;
+                    }
+                    catch (Exception e)
+                    {
+                        return new BlCallResult<RecipeDto>(BlCallResult.BlResult.RecipeError, e);
+                    }
+
+                }
+                try
+                {
+                    db.SaveChanges();
+                    return new BlCallResult<RecipeDto>(await GetRecipeAsync(recipe.Id));
+                }
+                catch (Exception e)
+                {
+                    return new BlCallResult<RecipeDto>(BlCallResult.BlResult.DbError, e);
+                }
+            }
+        }
+
+        public async Task<BlCallResult<RecipeBookDto>> AddRecipeToRecipeBook(RecipeBookDto recipeBookDto, RecipeDto recipeDto)
+        {
+            using (var db = new CoffeBookContext())
+            {
+                try
+                {
+                    recipeBookDto.Recipes.Add(recipeDto);
+                    var updatedRecipeBook = await UpdateRecipeBookAsync(recipeBookDto);
+                    recipeBookDto = updatedRecipeBook;
+                }
+                catch (Exception e)
+                {
+                    return new BlCallResult<RecipeBookDto>(BlCallResult.BlResult.RecipeBookError,e);
+                }
+                return new BlCallResult<RecipeBookDto>(recipeBookDto);
+            }
+        }
+
+        public async Task<BlCallResult<RecipeBookDto>> RemoveRecipeFromRecipeBook(RecipeBookDto recipeBookDto, RecipeDto recipeDto)
+        {
+            using (var db = new CoffeBookContext())
+            {
+                try
+                {
+                    recipeBookDto.Recipes.Remove(recipeDto);
+                    var updatedRecipeBook = await UpdateRecipeBookAsync(recipeBookDto);
+                    recipeBookDto = updatedRecipeBook;
+                }
+                catch (Exception e)
+                {
+                    return new BlCallResult<RecipeBookDto>(BlCallResult.BlResult.RecipeBookError, e);
+                }
+                return new BlCallResult<RecipeBookDto>(recipeBookDto);
+            }
+        }
+
+        public async Task<BlCallResult<IList<CoffeeDto>>> SearchForCoffee(string searchTerm)
+        {
+            using (var db = new CoffeBookContext())
+            {
+                try
+                {
+                    var coffees = db.Coffes
+                                  .Where(x => x.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()));
+                    var coffeeDtos = new List<CoffeeDto>();
+                    foreach (var coffee in coffees)
+                    {
+                        coffeeDtos.Add(new CoffeeDto(coffee));
+                    }
+                    return new BlCallResult<IList<CoffeeDto>>(coffeeDtos);
+                }
+                catch (Exception e)
+                {
+                    return new BlCallResult<IList<CoffeeDto>>(BlCallResult.BlResult.DbError,e);
+                }
+            }
+        }
+
+        public async Task<BlCallResult<IList<RecipeDto>>> GetCoffeeRecipes(CoffeeDto coffeeDto)
+        {
+            using (var db = new CoffeBookContext())
+            {
+                CoffeeDto coffee;
+                try
+                {
+                    coffee = await GetCoffeeAsync(coffeeDto.Id);
+                }
+                catch (Exception e)
+                {
+                    return new BlCallResult<IList<RecipeDto>>(BlCallResult.BlResult.CoffeeError,e);
+                }
+                var recipes = db.Recipes.Where(x => x.CoffeeType.Id == coffee.Id);
+                var recipeDtos = new List<RecipeDto>();
+                foreach (var recipe in recipes)
+                {
+                    recipeDtos.Add(new RecipeDto(recipe));
+                }
+                return new BlCallResult<IList<RecipeDto>>(recipeDtos);
+            }
+        }
+
         public async Task<CoffeeDto> AddCoffeeAsync(CoffeeDto newCoffee)
         {
             return await Task.Run(() =>
@@ -29,7 +160,7 @@ namespace BL
             {
                 using (var db = new CoffeBookContext())
                 {
-                    return new CoffeeDto(db.Coffes.SingleOrDefault(x=>x.Id == id));
+                    return new CoffeeDto(db.Coffes.SingleOrDefault(x => x.Id == id));
                 }
             });
         }
@@ -97,7 +228,7 @@ namespace BL
             {
                 using (var db = new CoffeBookContext())
                 {
-                    return new RecipeDto(db.Recipes.SingleOrDefault(x=>x.Id == id));
+                    return new RecipeDto(db.Recipes.SingleOrDefault(x => x.Id == id));
                 }
             });
         }
@@ -287,7 +418,7 @@ namespace BL
                     foreach (var recipe in updatedRecipeBook.Recipes)
                     {
                         // ?? var updatedRecipe = UpdateRecipeAsync(recipe);
-                        recipes.Add(ConvertDtoToEntity(recipe,db));
+                        recipes.Add(ConvertDtoToEntity(recipe, db));
                     }
                     recipeBook.Recipes = recipes;
                     db.SaveChanges();
