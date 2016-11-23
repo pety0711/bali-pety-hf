@@ -21,9 +21,12 @@ namespace BL.DTOs
             Name = userEntity.Name;
             Password = userEntity.Password;
             RecipeBooks = new List<RecipeBookDto>();
-            foreach (var item in userEntity.RecipeBooks)
+            if (userEntity.RecipeBooks != null)
             {
-                RecipeBooks.Add(new RecipeBookDto(item));
+                foreach (var item in userEntity.RecipeBooks)
+                {
+                    RecipeBooks.Add(new RecipeBookDto(item));
+                }
             }
         }
 

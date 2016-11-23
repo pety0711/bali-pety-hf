@@ -42,3 +42,4 @@ D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Cof
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Views\AuthenticatedView.g.cs
 D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\Views\MainWindowView.g.cs
+C:\Users\petys\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\bin\Debug\CoffeBook.exe.config

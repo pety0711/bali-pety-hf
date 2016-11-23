@@ -21,9 +21,12 @@ namespace BL.DTOs
             Name = recipeBookEntity.Name;
             Description = recipeBookEntity.Description;
             Recipes = new List<RecipeDto>();
-            foreach (var recipe in recipeBookEntity.Recipes)
+            if (recipeBookEntity.Recipes != null)
             {
-                Recipes.Add(new RecipeDto(recipe));
+                foreach (var recipe in recipeBookEntity.Recipes)
+                {
+                    Recipes.Add(new RecipeDto(recipe));
+                }
             }
         }
     }
