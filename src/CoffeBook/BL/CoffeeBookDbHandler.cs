@@ -406,6 +406,22 @@ namespace BL
             }
         }
 
+        public async Task<bool> CoffeeExists(string name)
+        {
+            using (var db = new CoffeBookContext())
+            {
+                return db.Coffes.SingleOrDefault(x => x.Name.Equals(name)) == null;
+            }
+        }
+
+        public async Task<bool> RecipeExists(string name)
+        {
+            using (var db = new CoffeBookContext())
+            {
+                return db.Recipes.SingleOrDefault(x => x.Name.Equals(name)) == null;
+            }
+        }
+
         private Coffee ConvertDtoToEntity(CoffeeDto coffeeDto, CoffeBookContext db)
         {
             var coffee = db.Coffes.SingleOrDefault(x => x.Id == coffeeDto.Id);

@@ -39,5 +39,9 @@ namespace BL.Interfaces
         Task<IList<RecipeBookDto>> GetAllRecipeBooksAsync();
         Task<RecipeBookDto> UpdateRecipeBookAsync(RecipeBookDto updatedRecipeBook);
         void DeleteRecipeBookAsync(long id);
+
+        Task<bool> CoffeeExists(string name);
+        Task<bool> RecipeExists(string name);
+
     }
 }

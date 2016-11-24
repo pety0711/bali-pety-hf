@@ -13,7 +13,6 @@ namespace DB.Entities
         public long Id { get; set; }
         [Required]
         [StringLength(100)]
-        [Index(IsUnique = true)]
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<Recipe> Recipes { get; set; }
