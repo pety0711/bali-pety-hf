@@ -17,7 +17,7 @@ namespace CoffeBook.Helpers
 
             var user = await dbHandler.GetUserAsync(name);
 
-            return ConvertToUser(user);
+            return user != null ? ConvertToUser(user) : null;
         }
 
         public static async Task<User> RegisterUser(User user)

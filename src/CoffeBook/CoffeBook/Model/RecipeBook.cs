@@ -36,7 +36,7 @@ namespace CoffeBook.Model
             }
         }
 
-        private ICollection<Recipe> recipes;
+        private ICollection<Recipe> recipes = new List<Recipe>();
 
         public ICollection<Recipe> Recipes
         {

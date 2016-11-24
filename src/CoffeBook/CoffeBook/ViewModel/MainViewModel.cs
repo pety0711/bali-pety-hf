@@ -307,18 +307,19 @@ namespace CoffeBook.ViewModel
 
         #region commands
 
-        public void Register(object obj)
+        public async void Register(object obj)
         {
             PasswordBox pwBox = obj as PasswordBox;
 
             var valid = ValidateInput(pwBox.Password);
             if (!valid)
                 return;
-            var user_result = UserHelper.GetUser(LoginUser.Name).Result;
+            var user_result = await UserHelper.GetUser(LoginUser.Name);
             if (user_result == null)
             {
-                UserHelper.RegisterUser(LoginUser);
-                Authenticate(LoginUser.Name, pwBox.Password);
+                LoginUser.Password = pwBox.Password;
+                var registeredUser = await UserHelper.RegisterUser(LoginUser);
+                Authenticate(LoginUser.Name, LoginUser.Password);
             }
             else
             {
@@ -366,17 +367,19 @@ namespace CoffeBook.ViewModel
         private void Authenticate(string userName, string password)
         {
             User u = UserHelper.GetUser(userName).Result;
+            if (u == null)
+            {
+                ErrorLog = "No Such User";
+                return;
+            }
             if (u.Password != password)
             {
                 ErrorLog = "Incorrect password";
                 return;
             }
-            else
-            {
-                IsAuthenticated = true;
-                LoginUser = u;
-                LoadRecipeBooks();
-            }
+            IsAuthenticated = true;
+            LoginUser = u;
+            LoadRecipeBooks();
         }
 
         private void Logout(object obj)
@@ -612,8 +615,8 @@ namespace CoffeBook.ViewModel
             recipeBook.Name = PropertiesName;
             recipeBook.Description = PropertiesDescription;
             // TODO recipes!
-            await RecipeBookHelper.AddRecipeBook(recipeBook);
-            LoginUser.RecipeBooks.Add(recipeBook);
+            var addedBook = await RecipeBookHelper.AddRecipeBook(recipeBook);
+            LoginUser.RecipeBooks.Add(addedBook);
         }
 
         private void CancelPropertiesCommand()
