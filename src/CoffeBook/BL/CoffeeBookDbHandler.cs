@@ -16,6 +16,7 @@ namespace BL
 
         public async Task<BlCallResult<RecipeDto>> AddRecipeToCoffee(CoffeeDto coffee, RecipeDto recipe)
         {
+            Console.WriteLine("AddRecipeToCoffee enter");
             using (var db = new CoffeBookContext())
             {
                 var coffeeFromDb = db.Coffes.SingleOrDefault(x => x.Id == coffee.Id);
@@ -28,6 +29,7 @@ namespace BL
                     }
                     catch (Exception e)
                     {
+                        Console.WriteLine("AddRecipeToCoffee exception");
                         return new BlCallResult<RecipeDto>(BlCallResult.BlResult.CoffeeError, e);
                     }
                 }
@@ -46,6 +48,7 @@ namespace BL
                     }
                     catch (Exception e)
                     {
+                        Console.WriteLine("AddRecipeToCoffee exception");
                         return new BlCallResult<RecipeDto>(BlCallResult.BlResult.RecipeError, e);
                     }
 
@@ -53,10 +56,12 @@ namespace BL
                 try
                 {
                     db.SaveChanges();
+                    Console.WriteLine("AddRecipeToCoffee exit");
                     return new BlCallResult<RecipeDto>(await GetRecipeAsync(recipe.Id));
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine("AddRecipeToCoffee exception");
                     return new BlCallResult<RecipeDto>(BlCallResult.BlResult.DbError, e);
                 }
             }
@@ -64,6 +69,7 @@ namespace BL
 
         public async Task<BlCallResult<RecipeBookDto>> AddRecipeToRecipeBook(RecipeBookDto recipeBookDto, RecipeDto recipeDto)
         {
+            Console.WriteLine("AddRecipeToRecipeBook enter");
             using (var db = new CoffeBookContext())
             {
                 try
@@ -75,13 +81,17 @@ namespace BL
                 catch (Exception e)
                 {
                     return new BlCallResult<RecipeBookDto>(BlCallResult.BlResult.RecipeBookError, e);
+                    Console.WriteLine("AddRecipeToRecipeBook exception");
+                    return new BlCallResult<RecipeBookDto>(BlCallResult.BlResult.RecipeBookError,e);
                 }
+                Console.WriteLine("AddRecipeToRecipeBook exit");
                 return new BlCallResult<RecipeBookDto>(recipeBookDto);
             }
         }
 
         public async Task<BlCallResult<RecipeBookDto>> RemoveRecipeFromRecipeBook(RecipeBookDto recipeBookDto, RecipeDto recipeDto)
         {
+            Console.WriteLine("RemoveRecipeFromRecipeBook enter");
             using (var db = new CoffeBookContext())
             {
                 try
@@ -92,14 +102,17 @@ namespace BL
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine("AddRecipeToRecipeBook exit");
                     return new BlCallResult<RecipeBookDto>(BlCallResult.BlResult.RecipeBookError, e);
                 }
+                Console.WriteLine("RemoveRecipeFromRecipeBook exit");
                 return new BlCallResult<RecipeBookDto>(recipeBookDto);
             }
         }
 
         public async Task<BlCallResult<IList<CoffeeDto>>> SearchForCoffee(string searchTerm)
         {
+            Console.WriteLine("SearchForCoffee enter");
             using (var db = new CoffeBookContext())
             {
                 try
@@ -111,17 +124,21 @@ namespace BL
                     {
                         coffeeDtos.Add(new CoffeeDto(coffee));
                     }
+                    Console.WriteLine("SearchForCoffee enter");
                     return new BlCallResult<IList<CoffeeDto>>(coffeeDtos);
                 }
                 catch (Exception e)
                 {
                     return new BlCallResult<IList<CoffeeDto>>(BlCallResult.BlResult.DbError, e);
+                    Console.WriteLine("AddRecipeToRecipeBook exit");
+                    return new BlCallResult<IList<CoffeeDto>>(BlCallResult.BlResult.DbError,e);
                 }
             }
         }
 
         public async Task<BlCallResult<IList<RecipeDto>>> GetCoffeeRecipes(CoffeeDto coffeeDto)
         {
+            Console.WriteLine("GetCoffeeRecipes enter");
             using (var db = new CoffeBookContext())
             {
                 CoffeeDto coffee;
@@ -139,6 +156,7 @@ namespace BL
                 {
                     recipeDtos.Add(new RecipeDto(recipe));
                 }
+                Console.WriteLine("GetCoffeeRecipes exit");
                 return new BlCallResult<IList<RecipeDto>>(recipeDtos);
             }
         }
