@@ -304,7 +304,7 @@ namespace CoffeBook.ViewModel
 
         #region commands
 
-        public void Register(object obj)
+        public async void Register(object obj)
         {
             PasswordBox pwBox = obj as PasswordBox;
 
@@ -314,7 +314,7 @@ namespace CoffeBook.ViewModel
             var user_result = UserHelper.GetUser(LoginUser.Name);
             if (user_result == null)
             {
-                UserHelper.RegisterUser(LoginUser);
+                await UserHelper.RegisterUser(LoginUser);
                 Authenticate(LoginUser.Name, pwBox.Password);
             }
             else

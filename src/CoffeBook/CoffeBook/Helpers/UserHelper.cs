@@ -25,8 +25,8 @@ namespace CoffeBook.Helpers
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
 
             UserDto regUser = ConvertFromUser(user);
-            
-            return ConvertToUser(await dbHandler.AddUserAsync(regUser));
+            UserDto udto = await dbHandler.AddUserAsync(regUser);
+            return ConvertToUser(udto);
         }
 
         private static User ConvertToUser(UserDto userDto)

@@ -12,7 +12,7 @@ namespace CoffeBook.Helpers
 {
     public class RecipeHelper
     {
-        public static async Task<ICollection<Recipe>> GetRecipes()
+        public static async ICollection<Recipe> GetRecipes()
         {
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
             var recipes = await dbHandler.GetAllRecipesAsync();
