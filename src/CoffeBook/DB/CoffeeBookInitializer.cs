@@ -27,6 +27,8 @@ namespace DB
                 {
                     Name = "User " + i,
                     Password = "Batman",
+                    FbPassword = "SocialBatman",
+                    FbMail = "me@bat.cave",
                     RecipeBooks = new List<RecipeBook>()
                 };
                 for (int j = 1; j <= 3; j++)

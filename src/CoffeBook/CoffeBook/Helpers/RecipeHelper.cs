@@ -22,7 +22,7 @@ namespace CoffeBook.Helpers
         public static void RemoveRecipe(Recipe recipe)
         {
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
-            dbHandler.DeleteRecipesAsync(recipe.Id);
+            dbHandler.DeleteRecipeAsync(recipe.Id);
         }
 
         public static async Task<Recipe> AddRecipe(Recipe recipe)

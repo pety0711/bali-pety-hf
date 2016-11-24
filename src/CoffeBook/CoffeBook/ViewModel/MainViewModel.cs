@@ -6,7 +6,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
+using BL.DTOs;
 using CoffeBook.Model;
 using CoffeBook.Helpers;
 
@@ -167,6 +169,7 @@ namespace CoffeBook.ViewModel
 
             LoadRecipes();
             LoadCoffees();
+
         }
 
         private void LoadRecipes()
@@ -311,7 +314,7 @@ namespace CoffeBook.ViewModel
             var valid = ValidateInput(pwBox.Password);
             if (!valid)
                 return;
-            var user_result = UserHelper.GetUser(LoginUser.Name);
+            var user_result = UserHelper.GetUser(LoginUser.Name).Result;
             if (user_result == null)
             {
                 UserHelper.RegisterUser(LoginUser);
@@ -332,7 +335,7 @@ namespace CoffeBook.ViewModel
             if (!valid)
                 return;
 
-            var user_result = UserHelper.GetUser(LoginUser.Name);
+            var user_result = UserHelper.GetUser(LoginUser.Name).Result;
             if (user_result == null)
             {
                 ErrorLog = "User not found!";

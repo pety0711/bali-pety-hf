@@ -26,7 +26,7 @@ namespace BL.Interfaces
         Task<RecipeDto> GetRecipeAsync(long id);
         Task<IList<RecipeDto>> GetAllRecipesAsync();
         Task<RecipeDto> UpdateRecipeAsync(RecipeDto updatedRecipe);
-        void DeleteRecipesAsync(long id);
+        void DeleteRecipeAsync(long id);
 
         Task<UserDto> AddUserAsync(UserDto newUser);
         Task<UserDto> GetUserAsync(long id);
