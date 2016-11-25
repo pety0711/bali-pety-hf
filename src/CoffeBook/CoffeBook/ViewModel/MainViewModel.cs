@@ -146,6 +146,42 @@ namespace CoffeBook.ViewModel
             }
         }
 
+        private bool isPropertiesCoffee;
+
+        public bool IsPropertiesCoffee
+        {
+            get { return isPropertiesCoffee; }
+            set
+            {
+                isPropertiesCoffee = value;
+                RaisePropertyChanged("IsPropertiesCoffee");
+            }
+        }
+
+        private bool isPropertiesRecipe;
+
+        public bool IsPropertiesRecipe
+        {
+            get { return isPropertiesRecipe; }
+            set
+            {
+                isPropertiesRecipe = value;
+                RaisePropertyChanged("IsPropertiesRecipe");
+            }
+        }
+
+        private bool isPropertiesRecipeBook;
+
+        public bool IsPropertiesRecipeBook
+        {
+            get { return isPropertiesRecipeBook; }
+            set
+            {
+                isPropertiesRecipeBook = value;
+                RaisePropertyChanged("IsPropertiesRecipeBook");
+            }
+        }
+
 
         public MainViewModel()
         {
@@ -157,13 +193,16 @@ namespace CoffeBook.ViewModel
             isAuthenticated = false;
             showProperties = false;
             propertiesParameter = "";
+            IsPropertiesRecipeBook = false;
+            IsPropertiesRecipe = false;
+            IsPropertiesCoffee = false;
 
             RegisterButtonCommand = new RelayCommand<object>(Register);
             LoginButtonCommand = new RelayCommand<object>(Login);
             LogoutButtonCommand = new RelayCommand<object>(Logout);
             ShowPropertiesButtonCommand = new RelayCommand<object>(ShowPropertiesCommand);
             CancelPropertiesButtonCommand = new RelayCommand(CancelPropertiesCommand);
-            ClosePropertiesButtonCommand = new RelayCommand(ClosePropertiesCommand);
+            ClosePropertiesButtonCommand = new RelayCommand<object>(ClosePropertiesCommand);
             DeletePropertiesButtonCommand = new RelayCommand(DeletePropertiesCommand);
 
 
@@ -253,6 +292,7 @@ namespace CoffeBook.ViewModel
                     return;
                 isAuthenticated = value;
                 RaisePropertyChanged("IsAuthenticated");
+                RaisePropertyChanged("IsNotAuthenticated");
             }
         }
 
@@ -387,6 +427,7 @@ namespace CoffeBook.ViewModel
             InputName = "";
             PasswordBox pwBox = obj as PasswordBox;
             pwBox.Password = "";
+            LoginUser = new User();
             IsAuthenticated = false;
         }
 
@@ -409,7 +450,7 @@ namespace CoffeBook.ViewModel
                     case "AddRecipe":
                         NewRecipe();
                         break;
-                    case "NewCoffee":
+                    case "AddCoffee":
                         NewCoffee();
                         break;
                 }
@@ -439,6 +480,9 @@ namespace CoffeBook.ViewModel
             ShowPropertiesDescription = true;
             ShowPropertiesRecipes = true;
             ShowPropertiesCoffees = false;
+            IsPropertiesRecipeBook = true;
+            IsPropertiesRecipe = false;
+            IsPropertiesCoffee = false;
         }
 
         public void NewRecipe()
@@ -458,6 +502,9 @@ namespace CoffeBook.ViewModel
             ShowPropertiesDescription = true;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = true;
+            IsPropertiesRecipeBook = false;
+            IsPropertiesRecipe = true;
+            IsPropertiesCoffee = false;
         }
 
         public void NewCoffee()
@@ -469,6 +516,9 @@ namespace CoffeBook.ViewModel
             ShowPropertiesDescription = false;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = false;
+            IsPropertiesRecipeBook = false;
+            IsPropertiesRecipe = false;
+            IsPropertiesCoffee = true;
         }
 
         private void EditProperties(object obj)
@@ -496,6 +546,9 @@ namespace CoffeBook.ViewModel
             ShowPropertiesDescription = false;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = false;
+            IsPropertiesRecipeBook = false;
+            IsPropertiesRecipe = false;
+            IsPropertiesCoffee = true;
         }
 
         private void EditRecipe(Recipe recipe)
@@ -521,6 +574,9 @@ namespace CoffeBook.ViewModel
             ShowPropertiesDescription = true;
             ShowPropertiesRecipes = false;
             ShowPropertiesCoffees = true;
+            IsPropertiesRecipeBook = false;
+            IsPropertiesRecipe = true;
+            IsPropertiesCoffee = false;
         }
         private void EditRecipeBook(RecipeBook recipeBook)
         {
@@ -547,6 +603,9 @@ namespace CoffeBook.ViewModel
             ShowPropertiesDescription = true;
             ShowPropertiesRecipes = true;
             ShowPropertiesCoffees = false;
+            IsPropertiesRecipeBook = true;
+            IsPropertiesRecipe = false;
+            IsPropertiesCoffee = false;
         }
 
 
@@ -555,6 +614,7 @@ namespace CoffeBook.ViewModel
             if (propertiesObject is RecipeBook)
             {
                 RecipeBookHelper.RemoveRecipeBook(propertiesObject as RecipeBook);
+                LoginUser.RecipeBooks.Remove(propertiesObject as RecipeBook);
                 LoadRecipeBooks();
             }
             else if (propertiesObject is Recipe)
@@ -575,48 +635,69 @@ namespace CoffeBook.ViewModel
             Coffees = (ObservableCollection<Coffee>) CoffeeHelper.GetCoffees().Result;
         }
 
-        private void ClosePropertiesCommand()
+        private void ClosePropertiesCommand(object obj)
         {
             if (propertiesObject is RecipeBook)
             {
-                SaveRecipeBook();
+                SaveRecipeBook(obj);
             }
             else if (propertiesObject is Recipe)
             {
-                SaveRecipe();
+                SaveRecipe(obj);
             }
             else if (propertiesObject is Coffee)
             {
-                SaveCoffee();
+                SaveCoffee(obj);
             }
             ShowProperties = false;
         }
 
-        private async void SaveCoffee()
+        private async void SaveCoffee(object obj)
         {
             Coffee coffee = propertiesObject as Coffee;
             coffee.Name = PropertiesName;
-            await CoffeeHelper.AddCoffee(coffee);
+            await CoffeeHelper.AddOrUpdateCoffee(coffee);
+            LoadCoffees();
 
         }
 
-        private async void SaveRecipe()
+        private async void SaveRecipe(object obj)
         {
             Recipe recipe = propertiesObject as Recipe;
             recipe.Name = PropertiesName;
             recipe.Description = PropertiesDescription;
-            // TODO coffetype
-            await RecipeHelper.AddRecipe(recipe);
+            if (obj is ComboBox)
+            {
+                ComboBox cb = obj as ComboBox;
+                Coffee c = CoffeeHelper.GetCoffees().Result.Where(x => x.Name == (string) cb.SelectedItem).SingleOrDefault();
+                if (c != null)
+                    recipe.CoffeType = c;
+            }
+            await RecipeHelper.AddOrUpdateRecipe(recipe);
+            LoadRecipes();
         }
 
-        private async void SaveRecipeBook()
+        private async void SaveRecipeBook(object obj)
         {
             RecipeBook recipeBook = propertiesObject as RecipeBook;
             recipeBook.Name = PropertiesName;
             recipeBook.Description = PropertiesDescription;
-            // TODO recipes!
-            var addedBook = await RecipeBookHelper.AddRecipeBook(recipeBook);
+            if (obj is ListBox)
+            {
+                recipeBook.Recipes = new ObservableCollection<Recipe>();
+                ListBox lb = obj as ListBox;
+                List<string> selectedRecipes = (List<string>) lb.SelectedItems;
+                foreach(var sr in selectedRecipes)
+                {
+                    Recipe r = RecipeHelper.GetRecipes().Result.Where(x => x.Name == sr).SingleOrDefault();
+                    if (r == null)
+                        continue;
+                    recipeBook.Recipes.Add(r);
+                };
+            }
+            var addedBook = await RecipeBookHelper.AddOrUpdateRecipeBook(recipeBook);
             LoginUser.RecipeBooks.Add(addedBook);
+            LoadRecipeBooks();
         }
 
         private void CancelPropertiesCommand()

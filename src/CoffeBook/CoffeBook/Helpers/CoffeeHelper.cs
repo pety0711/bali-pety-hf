@@ -63,5 +63,10 @@ namespace CoffeBook.Helpers
             };
             return coffeeDto;
         }
+
+        internal static Task AddOrUpdateCoffee(Coffee coffee)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace CoffeBook.Helpers
             dbHandler.DeleteRecipeAsync(recipe.Id);
         }
 
-        public static async Task<Recipe> AddRecipe(Recipe recipe)
+        public static async Task<Recipe> AddOrUpdateRecipe(Recipe recipe)
         {
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
             var recipeDto = ConvertFromRecipe(recipe);

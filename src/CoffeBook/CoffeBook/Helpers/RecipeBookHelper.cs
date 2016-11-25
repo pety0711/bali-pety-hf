@@ -68,5 +68,18 @@ namespace CoffeBook.Helpers
             };
             return recipeBookDto;
         }
+
+        public static RecipeBook AddOrUpdateRecipeBook(RecipeBook recipeBook)
+        {
+            RecipeBook rb = null;
+            if (recipeBook.Id <= 0)
+            {
+                //update
+            } else
+            {
+                rb = AddRecipeBook(recipeBook).Result;
+            }
+            return rb;
+        }
     }
 }
