@@ -64,9 +64,18 @@ namespace CoffeBook.Helpers
             return coffeeDto;
         }
 
-        internal static Task AddOrUpdateCoffee(Coffee coffee)
+        public static async Task<Coffee> AddOrUpdateCoffee(Coffee coffee)
         {
-            throw new NotImplementedException();
+            if (coffee.Id == null || coffee.Id <= 0)
+            {
+                return await AddCoffee(coffee);
+            }
+            else
+            {
+                var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
+                var coffeeDto = ConvertFromCoffee(coffee);
+                return ConvertToCoffee(await dbHandler.UpdateCoffeeAsync(coffeeDto));
+            }
         }
     }
 }

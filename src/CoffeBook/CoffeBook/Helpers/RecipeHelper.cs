@@ -29,7 +29,14 @@ namespace CoffeBook.Helpers
         {
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
             var recipeDto = ConvertFromRecipe(recipe);
-            return ConvertToRecipe(await dbHandler.AddRecipeAsync(recipeDto));
+            if (recipe.Id == null || recipe.Id <= 0)
+            {
+                return ConvertToRecipe(await dbHandler.AddRecipeAsync(recipeDto));
+            } else
+            {
+                return ConvertToRecipe(await dbHandler.UpdateRecipeAsync(recipeDto));
+            }
+            
         }
 
         public static ICollection<Recipe> ConvertToRecipes(IList<RecipeDto> recipeDtos)

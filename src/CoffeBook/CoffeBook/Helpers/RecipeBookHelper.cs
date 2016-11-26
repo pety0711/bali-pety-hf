@@ -69,17 +69,18 @@ namespace CoffeBook.Helpers
             return recipeBookDto;
         }
 
-        public static RecipeBook AddOrUpdateRecipeBook(RecipeBook recipeBook)
+        public static async Task<RecipeBook> AddOrUpdateRecipeBook(RecipeBook recipeBook)
         {
-            RecipeBook rb = null;
             if (recipeBook.Id <= 0)
             {
-                //update
-            } else
-            {
-                rb = AddRecipeBook(recipeBook).Result;
+                return await AddRecipeBook(recipeBook);
             }
-            return rb;
+            else
+            {
+                var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
+                RecipeBookDto recipeBookDto = ConvertFromRecipeBook(recipeBook);
+                return ConvertToRecipeBook(await dbHandler.UpdateRecipeBookAsync(recipeBookDto));
+            }
         }
     }
 }

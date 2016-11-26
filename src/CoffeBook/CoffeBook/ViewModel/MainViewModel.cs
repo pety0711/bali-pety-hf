@@ -115,7 +115,7 @@ namespace CoffeBook.ViewModel
                 if (value == showPropertiesDescription)
                     return;
                 showPropertiesDescription = value;
-                RaisePropertyChanged("ShowPropertiesRecipes");
+                RaisePropertyChanged("ShowPropertiesDescription");
             }
         }
 
@@ -192,6 +192,7 @@ namespace CoffeBook.ViewModel
             coffees = new ObservableCollection<Coffee>();
             isAuthenticated = false;
             showProperties = false;
+            showPropertiesDescription = false;
             propertiesParameter = "";
             IsPropertiesRecipeBook = false;
             IsPropertiesRecipe = false;
@@ -669,7 +670,7 @@ namespace CoffeBook.ViewModel
             if (obj is ComboBox)
             {
                 ComboBox cb = obj as ComboBox;
-                Coffee c = CoffeeHelper.GetCoffees().Result.Where(x => x.Name == (string) cb.SelectedItem).SingleOrDefault();
+                Coffee c = CoffeeHelper.GetCoffees().Result.Where(x => x.Name == cb.SelectedItem.ToString()).SingleOrDefault();
                 if (c != null)
                     recipe.CoffeType = c;
             }
@@ -686,7 +687,7 @@ namespace CoffeBook.ViewModel
             {
                 recipeBook.Recipes = new ObservableCollection<Recipe>();
                 ListBox lb = obj as ListBox;
-                List<string> selectedRecipes = (List<string>) lb.SelectedItems;
+                List<string> selectedRecipes = lb.SelectedItems.Cast<string>().ToList();
                 foreach(var sr in selectedRecipes)
                 {
                     Recipe r = RecipeHelper.GetRecipes().Result.Where(x => x.Name == sr).SingleOrDefault();
@@ -696,7 +697,14 @@ namespace CoffeBook.ViewModel
                 };
             }
             var addedBook = await RecipeBookHelper.AddOrUpdateRecipeBook(recipeBook);
-            LoginUser.RecipeBooks.Add(addedBook);
+            if (LoginUser.RecipeBooks.Where( x => x.Id == addedBook.Id).SingleOrDefault() != null)
+                LoginUser.RecipeBooks.Add(addedBook);
+            else
+            {
+                RecipeBook rb = LoginUser.RecipeBooks.Where(x => x.Name == addedBook.Name).SingleOrDefault();
+                LoginUser.RecipeBooks.Remove(rb);
+                LoginUser.RecipeBooks.Add(addedBook);
+            }
             LoadRecipeBooks();
         }
 
