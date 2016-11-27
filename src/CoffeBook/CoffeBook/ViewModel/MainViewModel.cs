@@ -423,8 +423,11 @@ namespace CoffeBook.ViewModel
             LoadRecipeBooks();
         }
 
-        private void Logout(object obj)
+        private async void Logout(object obj)
         {
+            UserHelper.RemoveUser(LoginUser);
+            await UserHelper.RegisterUser(LoginUser);
+
             InputName = "";
             PasswordBox pwBox = obj as PasswordBox;
             pwBox.Password = "";
@@ -593,6 +596,7 @@ namespace CoffeBook.ViewModel
 
             if (recipeBook.Recipes != null && recipeBook.Recipes.Count > 0)
             {
+                rs.Insert(0, "");
                 foreach (var r in recipeBook.Recipes)
                 {
                     rs.Remove(r.Name);
@@ -655,6 +659,7 @@ namespace CoffeBook.ViewModel
 
         private async void SaveCoffee(object obj)
         {
+            if (string.IsNullOrWhiteSpace(PropertiesName)) return;
             Coffee coffee = propertiesObject as Coffee;
             coffee.Name = PropertiesName;
             await CoffeeHelper.AddOrUpdateCoffee(coffee);
@@ -664,9 +669,11 @@ namespace CoffeBook.ViewModel
 
         private async void SaveRecipe(object obj)
         {
+            if (string.IsNullOrWhiteSpace(PropertiesName)) return;
+
             Recipe recipe = propertiesObject as Recipe;
             recipe.Name = PropertiesName;
-            recipe.Description = PropertiesDescription;
+            recipe.Description = string.IsNullOrWhiteSpace(PropertiesDescription) ? "No Description" : PropertiesDescription;
             if (obj is ComboBox)
             {
                 ComboBox cb = obj as ComboBox;
@@ -680,6 +687,8 @@ namespace CoffeBook.ViewModel
 
         private async void SaveRecipeBook(object obj)
         {
+            if (string.IsNullOrWhiteSpace(PropertiesName)) return;
+
             RecipeBook recipeBook = propertiesObject as RecipeBook;
             recipeBook.Name = PropertiesName;
             recipeBook.Description = PropertiesDescription;
@@ -690,6 +699,8 @@ namespace CoffeBook.ViewModel
                 List<string> selectedRecipes = lb.SelectedItems.Cast<string>().ToList();
                 foreach(var sr in selectedRecipes)
                 {
+                    if (string.IsNullOrWhiteSpace(sr))
+                        continue;
                     Recipe r = RecipeHelper.GetRecipes().Result.Where(x => x.Name == sr).SingleOrDefault();
                     if (r == null)
                         continue;
@@ -697,7 +708,7 @@ namespace CoffeBook.ViewModel
                 };
             }
             var addedBook = await RecipeBookHelper.AddOrUpdateRecipeBook(recipeBook);
-            if (LoginUser.RecipeBooks.Where( x => x.Id == addedBook.Id).SingleOrDefault() != null)
+            if (LoginUser.RecipeBooks.Where( x => x.Id == addedBook.Id).SingleOrDefault() == null)
                 LoginUser.RecipeBooks.Add(addedBook);
             else
             {

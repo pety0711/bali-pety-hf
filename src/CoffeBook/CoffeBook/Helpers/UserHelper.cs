@@ -51,5 +51,25 @@ namespace CoffeBook.Helpers
             };
             return userDto;
         }
+
+        public static async Task<User> RegisterOrUpdateUser(User loginUser)
+        {
+            var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
+            var userDto = ConvertFromUser(loginUser);
+            if (userDto.Id <= 0)
+            {
+                return ConvertToUser(await dbHandler.AddUserAsync(userDto));
+            }
+            else
+            {
+                return ConvertToUser(await dbHandler.UpdateUserAsync(userDto));
+            }
+        }
+
+        public static void RemoveUser(User loginUser)
+        {
+            var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
+            dbHandler.DeleteUserAsync(loginUser.Id);
+        }
     }
 }
