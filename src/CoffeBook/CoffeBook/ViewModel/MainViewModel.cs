@@ -472,8 +472,9 @@ namespace CoffeBook.ViewModel
 
         private async void Logout(object obj)
         {
-            UserHelper.RemoveUser(LoginUser);
-            await UserHelper.RegisterUser(LoginUser);
+            await UserHelper.RegisterOrUpdateUser(LoginUser);
+            //UserHelper.RemoveUser(LoginUser);
+            //await UserHelper.RegisterUser(LoginUser);
 
             InputName = "";
             PasswordBox pwBox = obj as PasswordBox;

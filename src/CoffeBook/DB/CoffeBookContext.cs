@@ -19,11 +19,6 @@ namespace DB
 
         public CoffeBookContext()
         {
-            if (s_recreateDatabase)
-            {
-                Database.Delete();
-                s_recreateDatabase = false;
-            }
             Configuration.LazyLoadingEnabled = false;
             Database.SetInitializer(new CoffeeBookInitializer());
         }

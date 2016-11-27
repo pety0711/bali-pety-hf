@@ -45,6 +45,7 @@ namespace CoffeBook.Helpers
         {
             UserDto userDto = new UserDto
             {
+                Id = user.Id,
                 Name = user.Name,
                 Password = user.Password,
                 RecipeBooks = RecipeBookHelper.ConvertFromRecipeBooks(user.RecipeBooks)
