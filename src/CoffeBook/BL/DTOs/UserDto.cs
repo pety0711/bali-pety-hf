@@ -8,8 +8,6 @@ namespace BL.DTOs
         public long Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
-        public string FbMail { get; set; }
-        public string FbPassword { get; set; }
         public IList<RecipeBookDto> RecipeBooks { get; set; }
 
         public UserDto()
@@ -22,8 +20,6 @@ namespace BL.DTOs
             Id = userEntity.Id;
             Name = userEntity.Name;
             Password = userEntity.Password;
-            FbMail = userEntity.FbMail;
-            FbPassword = userEntity.FbPassword;
             RecipeBooks = new List<RecipeBookDto>();
             if (userEntity.RecipeBooks != null)
             {

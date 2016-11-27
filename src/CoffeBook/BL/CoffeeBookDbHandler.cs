@@ -317,8 +317,6 @@ namespace BL
                 var user = GetUser(updatedUser.Id, db);
                 user.Name = updatedUser.Name;
                 user.Password = updatedUser.Password;
-                user.FbPassword = updatedUser.FbPassword;
-                user.FbMail = updatedUser.FbMail;
                 var recipeBooks = new List<RecipeBook>();
                 foreach (var recipeBook in updatedUser.RecipeBooks)
                 {
@@ -599,12 +597,9 @@ namespace BL
                 RecipeBooks = new List<RecipeBookDto> { recipeBookUpdated },
                 Name = "Feri",
                 Password = "feriakia...",
-                FbMail = "ez@ott.com",
-                FbPassword = "aszadba..."
             };
             var userAdded = dbHandler.AddUserAsync(userNew).Result;
             var userFromDb = dbHandler.GetUserAsync(userAdded.Id).Result;
-            userFromDb.FbPassword = "Teve";
             userFromDb.Name = "Galaktikus Johnny";
             userFromDb.RecipeBooks.RemoveAt(0);
             var userUpdated = dbHandler.UpdateUserAsync(userFromDb).Result;

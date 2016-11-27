@@ -283,6 +283,10 @@
                         <Button Content="Cancel"
                             Command="{Binding CancelPropertiesButtonCommand}"
                             Width="60" Margin="0,3,3,3"/>
+                        <Button Content="Share"
+                            Command="{Binding ShareButtonCommand}"
+                            Visibility="{Binding IsPropertiesRecipe,Converter={StaticResource BoolToVisible}}"
+                            Width="60" Margin="0,3,3,3"/>
                     </StackPanel>
                 </Grid>
             </Border>

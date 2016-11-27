@@ -7,10 +7,17 @@ using System.Windows.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using BL.DTOs;
+using CoffeBook.Facebook;
 using CoffeBook.Model;
 using CoffeBook.Helpers;
+using CoffeBook.Views;
+using Facebook;
 
 namespace CoffeBook.ViewModel
 {
@@ -28,6 +35,8 @@ namespace CoffeBook.ViewModel
         public ICommand ClosePropertiesButtonCommand { get; private set; }
         public ICommand CancelPropertiesButtonCommand { get; private set; }
         public ICommand DeletePropertiesButtonCommand { get; private set; }
+        public ICommand ShareButtonCommand { get; private set; }
+        
 
         private ObservableCollection<RecipeBook> recipebooks;
 
@@ -119,7 +128,6 @@ namespace CoffeBook.ViewModel
             }
         }
 
-
         private List<string> propertiesCoffees;
 
         public List<string> PropertiesCoffees
@@ -205,7 +213,7 @@ namespace CoffeBook.ViewModel
             CancelPropertiesButtonCommand = new RelayCommand(CancelPropertiesCommand);
             ClosePropertiesButtonCommand = new RelayCommand<object>(ClosePropertiesCommand);
             DeletePropertiesButtonCommand = new RelayCommand(DeletePropertiesCommand);
-
+            ShareButtonCommand = new RelayCommand(ShareCommand);
 
             LoadRecipes();
             LoadCoffees();
@@ -430,6 +438,7 @@ namespace CoffeBook.ViewModel
             pwBox.Password = "";
             LoginUser = new User();
             IsAuthenticated = false;
+            facebookHandler.FbAccountLoggedIn = false;
         }
 
         private void LoadRecipeBooks()
@@ -629,6 +638,13 @@ namespace CoffeBook.ViewModel
                 LoadCoffees();
             }
             ShowProperties = false;
+        }
+
+        private FacebookIntegration facebookHandler = new FacebookIntegration();
+
+        private async void ShareCommand()
+        {
+            facebookHandler.Share(propertiesObject);
         }
 
         private void LoadCoffees()
