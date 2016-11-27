@@ -104,14 +104,17 @@
                     </StackPanel>
                 </ScrollViewer>
             </GroupBox>
-            <GroupBox Grid.Row="1" Header="Recipes">
+            <GroupBox x:Name="recipeGrid" Grid.Row="1" Header="Recipes">
                 <GroupBox.HeaderTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="20"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding}" FontSize="20"/>
+                            <TextBox Margin="5,0" Width="100" Height="20" Text="{Binding ElementName=recipeGrid, Path=DataContext.RecipesSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </GroupBox.HeaderTemplate>
                 <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                    <StackPanel x:Name="recipeGrid" Margin="5"  
+                    <StackPanel Margin="5"  
                           Orientation="Horizontal" 
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Button Height="130" Width="130" Content="Add Recipe" Margin="6,6" 
@@ -172,7 +175,10 @@
             <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Header="Coffees">
                 <GroupBox.HeaderTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="20"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding}" FontSize="20"/>
+                            <TextBox Margin="5,0" Width="100" Height="20" Text="{Binding ElementName=recipeGrid, Path=DataContext.CoffeesSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </GroupBox.HeaderTemplate>
                 <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

@@ -182,6 +182,32 @@ namespace CoffeBook.ViewModel
             }
         }
 
+        private string coffeesSearch;
+
+        public string CoffeesSearch
+        {
+            get { return coffeesSearch; }
+            set
+            {
+                coffeesSearch = value;
+                RaisePropertyChanged("CoffeesSearch");
+                LoadCoffees(coffeesSearch);
+            }
+        }
+        
+        private string recipesSearch;
+
+        public string RecipesSearch
+        {
+            get { return recipesSearch; }
+            set
+            {
+                recipesSearch = value;
+                RaisePropertyChanged("RecipesSearch");
+                LoadRecipes(recipesSearch);
+            }
+        }
+
 
         public MainViewModel()
         {
@@ -197,6 +223,8 @@ namespace CoffeBook.ViewModel
             IsPropertiesRecipeBook = false;
             IsPropertiesRecipe = false;
             IsPropertiesCoffee = false;
+            coffeesSearch = "";
+            recipesSearch = "";
 
             RegisterButtonCommand = new RelayCommand<object>(Register);
             LoginButtonCommand = new RelayCommand<object>(Login);
@@ -217,6 +245,17 @@ namespace CoffeBook.ViewModel
             Recipes = (ObservableCollection<Recipe>) RecipeHelper.GetRecipes().Result;
         }
 
+        private void LoadCoffees(string coffeesSearch)
+        {
+            var cofs = CoffeeHelper.GetCoffees().Result;
+            Coffees = new ObservableCollection<Coffee>(cofs.Where(c => c.Name.ToLower().Contains(coffeesSearch.ToLower())));
+        }
+
+        private void LoadRecipes(string recipesSearch)
+        {
+            var res = RecipeHelper.GetRecipes().Result;
+            Recipes = new ObservableCollection<Recipe>( res.Where(r => r.Name.ToLower().Contains(recipesSearch.ToLower())));
+        }
         #region getters-setters
 
         public User LoginUser
