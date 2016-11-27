@@ -27,16 +27,16 @@ namespace DB
                 {
                     Name = "User " + i,
                     Password = "Batman",
-                    FbPassword = "SocialBatman",
-                    FbMail = "me@bat.cave",
                     RecipeBooks = new List<RecipeBook>()
                 };
                 for (int j = 1; j <= 3; j++)
                 {
-                    var recipeBook = new RecipeBook();
-                    recipeBook.Name = $"Recipebook {i}_{j}";
-                    recipeBook.Description = $"Recipebook recipes {i}_{j}";
-                    recipeBook.Recipes = new List<Recipe> {recipe};
+                    var recipeBook = new RecipeBook
+                    {
+                        Name = $"Recipebook {i}_{j}",
+                        Description = $"Recipebook recipes {i}_{j}",
+                        Recipes = new List<Recipe> {recipe}
+                    };
                     user.RecipeBooks.Add(recipeBook);
                     context.RecipeBooks.Add(recipeBook);
                 }

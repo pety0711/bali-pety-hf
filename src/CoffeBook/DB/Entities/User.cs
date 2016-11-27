@@ -17,8 +17,6 @@ namespace DB.Entities
         public string Name { get; set; }
         [Required]
         public string Password { get; set; }
-        public string FbMail { get; set; }
-        public string FbPassword { get; set; }
         public ICollection<RecipeBook> RecipeBooks { get; set; }
     }
 }
