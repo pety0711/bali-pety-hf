@@ -16,6 +16,7 @@ namespace CoffeBook.Helpers
         {
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
             var coffees = await dbHandler.GetAllCoffeesAsync();
+            coffees = coffees.OrderByDescending(c => c.Name).ToList();
             return ConvertToCoffees(coffees);
         }
 
@@ -37,7 +38,7 @@ namespace CoffeBook.Helpers
             ObservableCollection<Coffee> coffees = new ObservableCollection<Coffee>();
             foreach (var coffeeDto in coffeeDtos)
             {
-                coffees.Add(ConvertToCoffee(coffeeDto));
+                coffees.Insert(0, ConvertToCoffee(coffeeDto));
             }
             return coffees;
         }

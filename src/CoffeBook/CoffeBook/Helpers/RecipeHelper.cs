@@ -16,6 +16,7 @@ namespace CoffeBook.Helpers
         {
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
             var recipes = await dbHandler.GetAllRecipesAsync();
+            recipes = recipes.OrderByDescending(r => r.Name).ToList();
             return ConvertToRecipes(recipes);
         }
 
@@ -29,7 +30,7 @@ namespace CoffeBook.Helpers
         {
             var dbHandler = new CoffeeBookDbHandlerFactory().GetDbHandler();
             var recipeDto = ConvertFromRecipe(recipe);
-            if (recipe.Id == null || recipe.Id <= 0)
+            if (recipe.Id <= 0)
             {
                 return ConvertToRecipe(await dbHandler.AddRecipeAsync(recipeDto));
             } else
@@ -44,7 +45,7 @@ namespace CoffeBook.Helpers
             ObservableCollection<Recipe> recipes = new ObservableCollection<Recipe>();
             foreach (var recipeDto in recipeDtos)
             {
-                recipes.Add(ConvertToRecipe(recipeDto));
+                recipes.Insert(0, ConvertToRecipe(recipeDto));
             }
             return recipes;
         }

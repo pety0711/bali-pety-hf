@@ -10,9 +10,10 @@
         Title="CoffeeBook" Height="780" Width="1000" Background="#FFA67B5B">
     <StackPanel Margin="0">
 
+
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="140*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="110"/>
@@ -28,13 +29,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="CoffeeBook" MinWidth="150">
-                <TextBlock.Style>
-                    <Style>
-                        <Setter Property="TextBlock.FontSize" Value="25"/>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+            <TextBlock Text="CoffeeBook" MinWidth="150" FontSize="55" Grid.RowSpan="2"/>
             <Label Content="User name:" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2"
                    Visibility="{Binding IsNotAuthenticated, Converter={StaticResource BoolToVisible}}"/>
             <TextBox Text="{Binding Path=InputName, Mode=TwoWay}" HorizontalAlignment="Center" Margin="3,3,0,3" MinWidth="100" Grid.Column="3" TextAlignment="Left" VerticalAlignment="Center"
@@ -50,13 +45,7 @@
             <Button Command="{Binding LogoutButtonCommand}" CommandParameter="{Binding ElementName=passwordBox}" Content="Logout" Margin="3" MinWidth="70" Grid.Column="7" VerticalAlignment="Center"
                     Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisible}}" />
 
-            <TextBlock Text="{Binding Path=ErrorLog, Mode=TwoWay}" HorizontalAlignment="Right" Grid.Row="1" Grid.ColumnSpan="8">
-                <TextBlock.Style>
-                    <Style>
-                        <Setter Property="TextBlock.Foreground" Value="Red"/>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+            <TextBlock Text="{Binding Path=ErrorLog, Mode=TwoWay}" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="7" Foreground="Red"/>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -68,169 +57,188 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="RecipeBooks" Orientation="Horizontal" 
-                        Height="100" Margin="5"  
-                        Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisible}}" 
+            <GroupBox Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisible}}"
+                      Header="RecipeBooks">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="20"/>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel x:Name="RecipeBooks" Orientation="Horizontal" 
+                        Height="100" Margin="5"
                         Background="#66B4B4B4">
-                <Button Height="88" Width="100" Content="Add RecipeBook" Margin="6,6" 
+                        <Button Height="88" Width="100" Content="Add Recipe Book" Margin="6,6" 
                         Command="{Binding ShowPropertiesButtonCommand}" CommandParameter="AddRecipeBook">
-                    <Button.Background>
-                        <RadialGradientBrush RadiusX="2" RadiusY="2">
-                            <GradientStop Color="Gray" Offset="1"/>
-                            <GradientStop Color="#66FFFFFF"/>
-                        </RadialGradientBrush>
-                    </Button.Background>
-                </Button>
-                <ItemsControl x:Name="recipeBookGrid" ItemsSource="{Binding RecipeBooks}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Height="88" Width="150" Margin="6,6" 
-                                    Command="{Binding ElementName=recipeBookGrid, Path=DataContext.ShowPropertiesButtonCommand}" 
-                                    CommandParameter="{Binding}">
-                                <Button.Background>
-                                    <RadialGradientBrush RadiusX="2" RadiusY="2">
-                                        <GradientStop Color="Gray" Offset="1"/>
-                                        <GradientStop Color="#66FFFFFF"/>
-                                    </RadialGradientBrush>
-                                </Button.Background>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" 
-                                               HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                                    <TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" 
-                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                                </StackPanel>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                <StackPanel x:Name="recipeGrid" Margin="5"  
-                          Orientation="Horizontal" 
-                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Button Height="130" Width="130" Content="Add Recipe" Margin="6,6" 
-                        Command="{Binding ShowPropertiesButtonCommand}" CommandParameter="AddRecipe"
-                        HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Button.Background>
-                            <RadialGradientBrush RadiusX="2" RadiusY="2">
-                                <GradientStop Color="Gray" Offset="1"/>
-                                <GradientStop Color="#66FFFFFF"/>
-                            </RadialGradientBrush>
-                        </Button.Background>
-                    </Button>
-                    <Grid Background="#66ACACAC">
-                        <ItemsControl x:Name="Recipes" ItemsSource="{Binding Recipes}">
+                            <Button.Background>
+                                <RadialGradientBrush RadiusX="2" RadiusY="2">
+                                    <GradientStop Color="Gray" Offset="1"/>
+                                    <GradientStop Color="#66FFFFFF"/>
+                                </RadialGradientBrush>
+                            </Button.Background>
+                        </Button>
+                        <ItemsControl x:Name="recipeBookGrid" ItemsSource="{Binding RecipeBooks}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <UniformGrid Rows="3"/>
+                                    <StackPanel Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Height="130" Width="130" Margin="5" 
-                                        Command="{Binding ElementName=recipeGrid, Path=DataContext.ShowPropertiesButtonCommand}" 
-                                        CommandParameter="{Binding}">
+                                    <Button Height="88" Width="150" Margin="6,6" 
+                                    Command="{Binding ElementName=recipeBookGrid, Path=DataContext.ShowPropertiesButtonCommand}" 
+                                    CommandParameter="{Binding}">
                                         <Button.Background>
-                                            <RadialGradientBrush RadiusX="2" RadiusY="2">
-                                                <GradientStop Color="Gray" Offset="1"/>
-                                                <GradientStop Color="#66FFFFFF"/>
-                                            </RadialGradientBrush>
+                                            <ImageBrush ImageSource="..\Resources\recipebook.png" Stretch="Uniform" Opacity="0.3"/>
                                         </Button.Background>
-                                        <Grid Margin="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="40"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="20"/>
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Text="{Binding Name}" Grid.ColumnSpan="2" FontWeight="Bold" 
-                                                   FontSize="18" TextWrapping="Wrap" Margin="0" 
-                                                   HorizontalAlignment="Center" />
-                                            <TextBlock Text="{Binding Description}" Grid.Row="1" Grid.ColumnSpan="2" 
-                                                   FontSize="14" TextWrapping="Wrap" Margin="0"/>
-
-                                            <TextBlock Text="Coffe:" Grid.Row="2" FontSize="12" HorizontalAlignment="Left" 
-                                                   VerticalAlignment="Bottom" Margin="0"/>
-                                            <TextBlock Text="{Binding CoffeType.Name}" Grid.Row="2" Grid.Column="1" 
-                                                   FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                                   TextAlignment="Right" Margin="0"/>
-                                        </Grid>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                            <TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" 
+                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                        </StackPanel>
                                     </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </Grid>
-                </StackPanel>
-            </ScrollViewer>
-            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <StackPanel x:Name="coffeeGrid" Margin="5" Orientation="Horizontal"
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Header="Recipes">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="20"/>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel x:Name="recipeGrid" Margin="5"  
+                          Orientation="Horizontal" 
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Button Height="130" Width="130" Content="Add Coffee" Margin="6,6" 
+                        <Button Height="130" Width="130" Content="Add Recipe" Margin="6,6" 
+                        Command="{Binding ShowPropertiesButtonCommand}" CommandParameter="AddRecipe"
+                        HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <RadialGradientBrush RadiusX="2" RadiusY="2">
+                                    <GradientStop Color="Gray" Offset="1"/>
+                                    <GradientStop Color="#66FFFFFF"/>
+                                </RadialGradientBrush>
+                            </Button.Background>
+                        </Button>
+                        <Grid Background="#66ACACAC">
+                            <ItemsControl x:Name="Recipes" ItemsSource="{Binding Recipes}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="3"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Height="130" Width="130" Margin="5" 
+                                        Command="{Binding ElementName=recipeGrid, Path=DataContext.ShowPropertiesButtonCommand}" 
+                                        CommandParameter="{Binding}">
+                                            <Button.Background>
+                                                <ImageBrush ImageSource="..\Resources\recipe.png" Stretch="Uniform" Opacity="0.3"/>
+                                            </Button.Background>
+                                            <Grid Margin="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="40"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="20"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Name}" Grid.ColumnSpan="2" FontWeight="Bold" 
+                                                   FontSize="18" TextWrapping="Wrap" Margin="0" 
+                                                   HorizontalAlignment="Center" />
+                                                <TextBlock Text="{Binding Description}" Grid.Row="1" Grid.ColumnSpan="2" 
+                                                   FontSize="14" TextWrapping="Wrap" Margin="0" TextTrimming="CharacterEllipsis"/>
+
+                                                <TextBlock Text="Coffe:" Grid.Row="2" FontSize="12" HorizontalAlignment="Left" 
+                                                   VerticalAlignment="Bottom" Margin="0"/>
+                                                <TextBlock Text="{Binding CoffeType.Name}" Grid.Row="2" Grid.Column="1" 
+                                                   FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                                   TextAlignment="Right" Margin="0"/>
+                                            </Grid>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+            <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Header="Coffees">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="20"/>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="coffeeGrid" Margin="5" Orientation="Horizontal"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Button Height="130" Width="130" Content="Add Coffee" Margin="6,6" 
                         Command="{Binding ShowPropertiesButtonCommand}" CommandParameter="AddCoffee"
                         HorizontalAlignment="Left">
-                        <Button.Background>
-                            <RadialGradientBrush RadiusX="2" RadiusY="2">
-                                <GradientStop Color="Gray" Offset="1"/>
-                                <GradientStop Color="#66FFFFFF"/>
-                            </RadialGradientBrush>
-                        </Button.Background>
-                    </Button>
-                    <Grid Background="#66ACACAC" HorizontalAlignment="Stretch">
-                        <ItemsControl x:Name="Coffees" ItemsSource="{Binding Coffees}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Rows="1"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button Height="130" Width="130" Margin="5" 
+                            <Button.Background>
+                                <RadialGradientBrush RadiusX="2" RadiusY="2">
+                                    <GradientStop Color="Gray" Offset="1"/>
+                                    <GradientStop Color="#66FFFFFF"/>
+                                </RadialGradientBrush>
+                            </Button.Background>
+                        </Button>
+                        <Grid Background="#66ACACAC" HorizontalAlignment="Stretch">
+                            <ItemsControl x:Name="Coffees" ItemsSource="{Binding Coffees}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Height="130" Width="130" Margin="5" 
                                         Command="{Binding ElementName=coffeeGrid, Path=DataContext.ShowPropertiesButtonCommand}" 
                                         CommandParameter="{Binding}">
-                                        <Button.Background>
-                                            <RadialGradientBrush RadiusX="2" RadiusY="2">
-                                                <GradientStop Color="Gray" Offset="1"/>
-                                                <GradientStop Color="#66FFFFFF"/>
-                                            </RadialGradientBrush>
-                                        </Button.Background>
-                                        <Grid Margin="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="40"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="20"/>
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Text="{Binding Name}" Grid.ColumnSpan="2" 
+                                            <Button.Background>
+                                                <ImageBrush ImageSource="..\Resources\coffee.png" Stretch="Uniform" Opacity="0.3"/>
+                                            </Button.Background>
+                                            <Grid Margin="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="40"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="20"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Name}" Grid.ColumnSpan="2" 
                                                    FontWeight="Bold" FontSize="18" 
                                                    TextWrapping="Wrap" Margin="0" 
                                                    HorizontalAlignment="Center" />
-                                            <TextBlock Text="{Binding Description}" Grid.Row="1" Grid.ColumnSpan="2" 
+                                                <TextBlock Text="{Binding Description}" Grid.Row="1" Grid.ColumnSpan="2" 
                                                    FontSize="14" TextWrapping="Wrap" Margin="0"/>
-                                        </Grid>
-                                    </Button>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Grid>
-                </StackPanel>
-            </ScrollViewer>
-            <Border BorderBrush="Black" BorderThickness="2" Margin="5" Grid.Column="2" Grid.RowSpan="2"
-                    Visibility="{Binding ShowProperties, Converter={StaticResource BoolToVisible}}">
+                                            </Grid>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+            <GroupBox Margin="5,0" Grid.Column="2" Grid.RowSpan="2"
+                      Visibility="{Binding ShowProperties, Converter={StaticResource BoolToVisible}}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="Properties" FontSize="20"/>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="140*" MaxWidth="200"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -248,7 +256,9 @@
                            Visibility="{Binding ShowPropertiesDescription,Converter={StaticResource BoolToVisible}}"/>
                     <TextBox Text="{Binding PropertiesDescription, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" 
                          Visibility="{Binding ShowPropertiesDescription,Converter={StaticResource BoolToVisible}}"
-                         MinWidth="100" Height="55" VerticalAlignment="Center"/>
+                         MinWidth="100" MaxWidth="190" Height="55" VerticalAlignment="Center"
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <Label Content="Recipes" Grid.Row="3" 
                          Visibility="{Binding ShowPropertiesRecipes,Converter={StaticResource BoolToVisible}}"/>
                     <ListBox x:Name="lbRecipes" ItemsSource="{Binding PropertiesRecipes}" Height="100" 
@@ -257,7 +267,7 @@
                     <Label Content="Coffee type" Grid.Row="3" 
                        Visibility="{Binding ShowPropertiesCoffees,Converter={StaticResource BoolToVisible}}"/>
                     <ComboBox x:Name="cbCoffees" ItemsSource="{Binding PropertiesCoffees}" Grid.Row="3" Grid.Column="1"
-                          VerticalAlignment="Top" MinWidth="100"
+                          VerticalAlignment="Top" MinWidth="100" SelectedIndex="0"
                           Visibility="{Binding ShowPropertiesCoffees,Converter={StaticResource BoolToVisible}}"/>
 
                     <Button Content="Delete" Command="{Binding DeletePropertiesButtonCommand}" 
@@ -289,7 +299,7 @@
                             Width="60" Margin="0,3,3,3"/>
                     </StackPanel>
                 </Grid>
-            </Border>
+            </GroupBox>
         </Grid>
     </StackPanel>
 </Window>

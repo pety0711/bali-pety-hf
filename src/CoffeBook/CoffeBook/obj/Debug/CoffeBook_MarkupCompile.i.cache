@@ -4,7 +4,7 @@
 winexe
 C#
 .cs
-C:\Users\Bali\Documents\GitHub\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\
+D:\P\Documents\GitHubProjects\bali-pety-hf\src\CoffeBook\CoffeBook\obj\Debug\
 CoffeBook
 none
 false
@@ -16,5 +16,5 @@ C:\Users\Bali\Documents\GitHub\bali-pety-hf\src\CoffeBook\CoffeBook\App.xaml
 79-1475493498
 Views\BrowserWindow.xaml;Views\MainWindow.xaml;
 
-False
+True
 
