@@ -80,7 +80,6 @@ namespace BL
                 }
                 catch (Exception e)
                 {
-                    return new BlCallResult<RecipeBookDto>(BlCallResult.BlResult.RecipeBookError, e);
                     Console.WriteLine("AddRecipeToRecipeBook exception");
                     return new BlCallResult<RecipeBookDto>(BlCallResult.BlResult.RecipeBookError,e);
                 }
@@ -113,7 +112,7 @@ namespace BL
         public async Task<BlCallResult<IList<CoffeeDto>>> SearchForCoffee(string searchTerm)
         {
             Console.WriteLine("SearchForCoffee enter");
-            using (var db = new CoffeBookContext())
+            using (var db = new CoffeBookContext()) 
             {
                 try
                 {
